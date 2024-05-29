@@ -13,7 +13,7 @@ export const useTimetableDates = (
 
     const itemDates = items
       .flatMap((item) => {
-        const itemDates = [];
+        const itemDates: number[] = [];
         if (item.startDate) {
           itemDates.push(new Date(item.startDate).getTime());
         }
