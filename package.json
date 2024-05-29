@@ -21,6 +21,10 @@
     "/dist"
   ],
   "author": "Michel Vermeer <info@michelvermeer.com> (https://michelvermeer.com/)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/michelvermeer/ftr-timetable.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "jest && tsc && vite build",
