@@ -23,7 +23,7 @@
   "author": "Michel Vermeer <info@michelvermeer.com> (https://michelvermeer.com/)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/michelvermeer/ftr-timetable.git"
+    "url": "git+https://github.com/michelvermeer/ftr-timetable.git"
   },
   "scripts": {
     "dev": "vite",
