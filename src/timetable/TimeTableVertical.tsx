@@ -42,9 +42,10 @@ const TimeTableLocation = React.memo(function ({
     <div className="flex flex-1 flex-col border-r-2 border-r-slate-700">
       <div
         data-testid={`timetable-location-${location.id}`}
-        className="sticky bg-slate-900 px-2 flex h-12 items-center top-0 z-[2] border-b-2 border-b-slate-700"
+        title={location.name}
+        className="sticky bg-black px-2 flex h-12 text-sm items-center top-0 z-[2] border-b-2 border-b-slate-700"
       >
-        {location.name}
+        <div className="w-full line-clamp-2 text-ellipsis">{location.name}</div>
       </div>
       <div className="bg-slate-800 flex-1 relative">
         {itemsForLocation.map((item, j) => (

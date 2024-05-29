@@ -9,14 +9,16 @@ import { useItems } from "./hooks/useItems";
 
 export interface TimeTable {
   locations: TimeTableLocation[];
-  items: TimeTableItem[];
+  items?: TimeTableItem[];
   variant?: "horizontal" | "vertical"; // Set default value to "horizontal"
   startingHour?: number;
   dates?: string[];
   numberOfHours?: number;
-  onItemClick?: (item: TimeTableItem) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onItemClick?: (item: TimeTableRenderedItem<any>) => void;
   onDateChange?: (date: string) => void;
-  renderItem?: <T>(item: TimeTableRenderedItem<T>) => React.ReactNode;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  renderItem?: (item: TimeTableRenderedItem<any>) => React.ReactNode;
 }
 
 export interface TimeTableLocation {
@@ -67,7 +69,7 @@ export const TimeTable: React.FC<TimeTable> = ({
   }, [variant, locations]);
 
   const hours = useMemo<TimeTableHour[]>(() => {
-    const hrs = [];
+    const hrs: TimeTableHour[] = [];
     for (let i = startingHour; i < startingHour + numberOfHours; i++) {
       const h = i < 24 ? i : i - 24;
       hrs.push({

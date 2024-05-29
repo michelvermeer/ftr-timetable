@@ -1,10 +1,11 @@
 import React, { createContext, createRef } from "react";
 import { TimeTable } from "./TimeTable";
+import { TimeTableItem } from "./TimeTableItem";
 
 export interface TimeTableContext {
   onItemClick?: TimeTable["onItemClick"];
   renderItem?: TimeTable["renderItem"];
-  items: TimeTable["items"];
+  items: TimeTableItem[];
   startingHour: number;
   numberOfHours: number;
   displayStyle: TimeTable["variant"];

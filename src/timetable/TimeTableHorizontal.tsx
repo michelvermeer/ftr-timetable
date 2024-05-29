@@ -40,14 +40,15 @@ const TimeTableLocation = React.memo(function ({
   );
 
   return (
-    <div className="flex border-b-2 border-b-slate-700">
+    <div className="flex border-b-2 border-b-slate-700 h-[60px]">
       <div
         data-testid={`timetable-location-${location.id}`}
-        className="w-40 sticky bg-black z-[2] px-2 py-4 top-0 left-0 border-r-2 border-r-slate-700"
+        title={location.name}
+        className="w-40 h-full px-2 flex text-sm items-center sticky bg-black z-[2] top-0 left-0 border-r-2 border-r-slate-700"
       >
-        {location.name}
+        <div className="w-full line-clamp-2 text-ellipsis">{location.name}</div>
       </div>
-      <div className="bg-slate-800 flex-1 relative">
+      <div className="bg-slate-800 flex-1 relative h-full">
         {itemsForLocation.map((item, i) => {
           return <TimeTableItem item={item} key={`tt_${item.id}_${i}`} />;
         })}
@@ -69,7 +70,7 @@ export const TimeTableHorizontal: React.FC<TimeTableView> = ({
       ref={ref}
       data-testid="timetable-horizontal"
       className="ftr-timetable ftr-timetable-horizontal"
-      style={{ height: `${locations.length * 58 + 50}px` }}
+      style={{ height: `${locations.length * 60 + 50}px` }}
     >
       <TimeTableInner style={{ minWidth: `${hours.length * 60 + 160}px` }}>
         <div className="flex sticky top-0 z-[3] border-b-2 border-b-slate-700 w-full">
