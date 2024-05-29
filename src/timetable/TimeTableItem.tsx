@@ -15,7 +15,7 @@ export interface TimeTableItem {
   startDate: Date | string;
   endDate: Date | string;
   locationId?: string | number;
-  data?: Record<string, any>;
+  data?: Record<string, unknown>;
 }
 
 export interface TimeTableRenderedItem<T> extends Omit<TimeTableItem, "data"> {

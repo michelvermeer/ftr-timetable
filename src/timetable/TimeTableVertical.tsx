@@ -11,9 +11,21 @@ const TimeTableContainer = styled.div`
   ::-webkit-scrollbar {
     display: none;
   }
-
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+  height: 100%;
+  max-width: 100vw;
+  position: relative;
+  overflow: auto;
+`;
+
+const TimeTableInner = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  transform: translateY(-1px);
 `;
 
 const TimeTableLocation = React.memo(function ({
@@ -55,9 +67,9 @@ export const TimeTableVertical: React.FC<TimeTableView> = ({
     <TimeTableContainer
       ref={ref}
       data-testid="timetable-vertical"
-      className="ftr-timetable ftr-timetable-vertical w-full max-w-[100vw] h-full relative overflow-auto"
+      className="ftr-timetable ftr-timetable-vertical"
     >
-      <div className="absolute w-full h-full left-0 top-0 -translate-y-[1px]">
+      <TimeTableInner>
         <div
           className="flex flex-row w-full"
           style={{ minWidth: `${locations.length * 200}px` }}
@@ -101,7 +113,7 @@ export const TimeTableVertical: React.FC<TimeTableView> = ({
             ))}
           </div>
         </div>
-      </div>
+      </TimeTableInner>
     </TimeTableContainer>
   );
 };

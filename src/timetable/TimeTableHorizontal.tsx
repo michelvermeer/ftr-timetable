@@ -14,6 +14,19 @@ const TimeTableContainer = styled.div`
 
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+  position: relative;
+  overflow: auto;
+  width: 100%;
+  max-height: 100%;
+  max-width: 100vw;
+`;
+
+const TimeTableInner = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
 `;
 
 const TimeTableLocation = React.memo(function ({
@@ -55,13 +68,10 @@ export const TimeTableHorizontal: React.FC<TimeTableView> = ({
     <TimeTableContainer
       ref={ref}
       data-testid="timetable-horizontal"
-      className="ftr-timetable ftr-timetable-horizontal relative w-full max-h-full max-w-[100vw] overflow-auto"
+      className="ftr-timetable ftr-timetable-horizontal"
       style={{ height: `${locations.length * 58 + 50}px` }}
     >
-      <div
-        className="absolute w-full h-full left-0 top-0"
-        style={{ minWidth: `${hours.length * 60 + 160}px` }}
-      >
+      <TimeTableInner style={{ minWidth: `${hours.length * 60 + 160}px` }}>
         <div className="flex sticky top-0 z-[3] border-b-2 border-b-slate-700 w-full">
           <div className="w-40 shrink-0 sticky bg-slate-900 z-[2] px-1 h-12 flex flex-col justify-center top-0 left-0 border-r-2 border-r-slate-700">
             <select
@@ -98,7 +108,7 @@ export const TimeTableHorizontal: React.FC<TimeTableView> = ({
         {locations.map((location, i) => (
           <TimeTableLocation location={location} key={`location_${i}`} />
         ))}
-      </div>
+      </TimeTableInner>
     </TimeTableContainer>
   );
 };
