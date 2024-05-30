@@ -3,6 +3,8 @@
 A versatile, configurable and responsive timetable component for React.
 Ideal for showing the agenda for locations on a specific date.
 
+![Example](https://github.com/michelvermeer/ftr-timetable/blob/main/public/ftr-timetable-example.png?raw=true)
+
 ## Installation
 
 ```
