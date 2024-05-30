@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
         react(),
         dts({
           rollupTypes: true,
-          include: ["src/timetable/*", "src/index.ts"],
+          include: ["src/components/timetable/*", "src/index.ts"],
           exclude: ["**/*.spec.*"],
         }),
       ],
@@ -40,6 +40,7 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
+    base: "./",
     plugins: [react()],
     server: {
       port: 1337,

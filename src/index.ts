@@ -1,1 +1,1 @@
-export * from "./timetable";
+export * from "./components/timetable";

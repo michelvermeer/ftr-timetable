@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { TimeTableMarker } from "./TimeTableMarker";
 import { TimeTableItem } from "./TimeTableItem";
 import { useTimeTableContext } from "./hooks/useTimeTable";
+import { useItemIntersections } from "./hooks/useItemIntersections";
 
 const TimeTableContainer = styled.div`
   ::-webkit-scrollbar {
@@ -38,18 +39,25 @@ const TimeTableLocation = React.memo(function ({
     (item) => item.locationId === location.id
   );
 
+  const itemWithIntersection = useItemIntersections(itemsForLocation);
+
   return (
     <div className="flex flex-1 flex-col border-r-2 border-r-slate-700">
       <div
         data-testid={`timetable-location-${location.id}`}
         title={location.name}
-        className="sticky bg-black px-2 flex h-12 text-sm items-center top-0 z-[2] border-b-2 border-b-slate-700"
+        className="sticky bg-black px-2 flex h-[60px] text-sm items-center top-0 z-[2] border-b-2 border-b-slate-700"
       >
         <div className="w-full line-clamp-2 text-ellipsis">{location.name}</div>
       </div>
       <div className="bg-slate-800 flex-1 relative">
-        {itemsForLocation.map((item, j) => (
-          <TimeTableItem item={item} key={`tt_${item.id}_${j}`} />
+        {itemWithIntersection.map((item, j) => (
+          <TimeTableItem
+            item={item.item}
+            intersections={item.intersections}
+            offset={item.offset}
+            key={`tt_${item.item.id}_${j}`}
+          />
         ))}
       </div>
     </div>
@@ -76,7 +84,7 @@ export const TimeTableVertical: React.FC<TimeTableView> = ({
           style={{ minWidth: `${locations.length * 200}px` }}
         >
           <div className="w-32 border-r-2 border-r-slate-700 bg-slate-900 sticky left-0 top-0 z-[3]">
-            <div className="sticky bg-slate-900 px-1 h-12 flex justify-end items-center top-0 z-[2] border-b-2 border-b-slate-700">
+            <div className="sticky bg-slate-900 px-1 h-[60px] flex justify-end items-center top-0 z-[2] border-b-2 border-b-slate-700">
               <select
                 value={selectedDate}
                 onChange={(e) => dateChange(e.target.value)}

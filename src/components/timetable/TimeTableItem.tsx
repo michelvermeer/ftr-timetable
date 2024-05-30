@@ -26,30 +26,34 @@ const TimeTableItemVertical = React.memo(function ({
   item,
   eventStartOffset,
   eventSize,
+  intersections,
+  offset,
 }: {
   item: TimeTableItem;
   eventStartOffset: number;
   eventSize: number;
+  intersections: number;
+  offset: number;
 }) {
   const { onItemClick, renderItem } = useTimeTableContext();
   return (
     <div
       className="px-1 text-sm w-full absolute"
       title={item.name}
-      style={{ top: `${eventStartOffset}px`, height: `${eventSize}px` }}
+      style={{
+        top: `${eventStartOffset}px`,
+        height: `${eventSize}px`,
+        left: `calc(100% / ${intersections + 1} * ${offset})`,
+        maxWidth: `calc(100% / ${intersections + 1})`,
+      }}
     >
       <div className="relative h-full" onClick={() => onItemClick?.(item)}>
         {renderItem ? (
           renderItem(item)
         ) : (
-          <div className="bg-white hover:bg-slate-200 text-slate-500 cursor-pointer ftr-timetable__item flex flex-col relative h-full p-1">
-            <div className="sticky text-[12px] top-[50px] text-ellipsis overflow-hidden">
+          <div className="bg-slate-400 hover:bg-slate-300 text-slate-800 cursor-pointer ftr-timetable__item flex flex-col relative h-full p-1">
+            <div className="sticky text-[12px] top-[62px] text-ellipsis overflow-hidden">
               <div>{item.name}</div>
-              <div>{format(new Date(item.startDate), "dd MMM")}</div>
-              <div>
-                {format(new Date(item.startDate), "HH:mm")} -{" "}
-                {format(new Date(item.endDate), "HH:mm")}
-              </div>
             </div>
           </div>
         )}
@@ -62,23 +66,32 @@ const TimeTableItemHorizontal = React.memo(function ({
   item,
   eventStartOffset,
   eventSize,
+  intersections,
+  offset,
 }: {
   item: TimeTableItem;
   eventStartOffset: number;
   eventSize: number;
+  intersections: number;
+  offset: number;
 }) {
   const { onItemClick, renderItem } = useTimeTableContext();
   return (
     <div
-      className="py-1 text-sm h-full absolute"
+      className="py-[1px] text-sm h-full absolute"
       title={item.name}
-      style={{ left: `${eventStartOffset}px`, width: `${eventSize}px` }}
+      style={{
+        left: `${eventStartOffset}px`,
+        width: `${eventSize}px`,
+        top: `calc(100% / ${intersections + 1} * ${offset})`,
+        maxHeight: `calc(100% / ${intersections + 1})`,
+      }}
     >
       <div className="relative h-full" onClick={() => onItemClick?.(item)}>
         {renderItem ? (
           renderItem(item)
         ) : (
-          <div className="bg-white hover:bg-slate-200 ftr-timetable__item cursor-pointer text-slate-500 flex relative h-full p-1">
+          <div className="bg-slate-400 hover:bg-slate-300 ftr-timetable__item cursor-pointer text-slate-800 flex relative h-full px-1 py-0.5">
             <div className="sticky text-[12px] left-[164px] line-clamp-2 text-ellipsis overflow-hidden">
               {item.name}
             </div>
@@ -91,8 +104,12 @@ const TimeTableItemHorizontal = React.memo(function ({
 
 export const TimeTableItem = React.memo(function ({
   item,
+  intersections,
+  offset,
 }: {
   item: TimeTableItem;
+  intersections: number;
+  offset: number;
 }) {
   const { startingHour, numberOfHours, selectedDate, displayStyle } =
     useTimeTableContext();
@@ -122,6 +139,8 @@ export const TimeTableItem = React.memo(function ({
     return (
       <TimeTableItemVertical
         item={item}
+        intersections={intersections}
+        offset={offset}
         eventStartOffset={eventStartOffset}
         eventSize={eventSize}
       />
@@ -131,6 +150,8 @@ export const TimeTableItem = React.memo(function ({
   return (
     <TimeTableItemHorizontal
       item={item}
+      intersections={intersections}
+      offset={offset}
       eventStartOffset={eventStartOffset}
       eventSize={eventSize}
     />

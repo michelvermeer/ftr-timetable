@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { TimeTableMarker } from "./TimeTableMarker";
 import { TimeTableItem } from "./TimeTableItem";
 import { useTimeTableContext } from "./hooks/useTimeTable";
+import { useItemIntersections } from "./hooks/useItemIntersections";
 
 const TimeTableContainer = styled.div`
   ::-webkit-scrollbar {
@@ -39,6 +40,8 @@ const TimeTableLocation = React.memo(function ({
     (item) => item.locationId === location.id
   );
 
+  const itemWithIntersection = useItemIntersections(itemsForLocation);
+
   return (
     <div className="flex border-b-2 border-b-slate-700 h-[60px]">
       <div
@@ -49,8 +52,15 @@ const TimeTableLocation = React.memo(function ({
         <div className="w-full line-clamp-2 text-ellipsis">{location.name}</div>
       </div>
       <div className="bg-slate-800 flex-1 relative h-full">
-        {itemsForLocation.map((item, i) => {
-          return <TimeTableItem item={item} key={`tt_${item.id}_${i}`} />;
+        {itemWithIntersection.map((item, i) => {
+          return (
+            <TimeTableItem
+              item={item.item}
+              intersections={item.intersections}
+              offset={item.offset}
+              key={`tt_${item.item.id}_${i}`}
+            />
+          );
         })}
       </div>
     </div>
