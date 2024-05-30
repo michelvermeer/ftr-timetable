@@ -1,0 +1,29 @@
+{
+  "name": "ftr-timetable",
+  "description": "A versatile timetable component for React",
+  "private": false,
+  "version": "1.0.6",
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.es.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./styles": "./dist/style.css"
+  },
+  "files": [
+    "/dist"
+  ],
+  "author": "Michel Vermeer <info@michelvermeer.com> (https://michelvermeer.com/)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michelvermeer/ftr-timetable.git"
+  }
+}

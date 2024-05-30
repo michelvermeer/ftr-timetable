@@ -2,24 +2,24 @@
   "name": "ftr-timetable",
   "description": "A versatile timetable component for React",
   "private": false,
-  "version": "1.0.5",
+  "version": "1.0.6",
   "type": "module",
-  "types": "dist/index.d.ts",
-  "main": "dist/index.umd.js",
-  "module": "dist/index.es.js",
+  "types": "package/dist/index.d.ts",
+  "main": "package/dist/index.umd.js",
+  "module": "package/dist/index.es.js",
   "publishConfig": {
     "access": "public"
   },
   "exports": {
     ".": {
-      "import": "./dist/index.es.js",
-      "require": "./dist/index.umd.js",
-      "types": "./dist/src/index.d.ts"
+      "import": "./package/dist/index.es.js",
+      "require": "./package/dist/index.umd.js",
+      "types": "./package/dist/index.d.ts"
     },
-    "./styles": "./dist/style.css"
+    "./styles": "./package/dist/style.css"
   },
   "files": [
-    "/dist"
+    "/package/dist"
   ],
   "author": "Michel Vermeer <info@michelvermeer.com> (https://michelvermeer.com/)",
   "repository": {
@@ -29,16 +29,10 @@
   "scripts": {
     "dev": "vite",
     "build": "jest && tsc && vite build",
+    "export": "jest && tsc && vite build --mode lib",
     "test": "jest",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
-  },
-  "dependencies": {
-    "clsx": "^2.1.1",
-    "date-fns": "^3.6.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "styled-components": "^6.1.11"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.5",
@@ -51,13 +45,18 @@
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.19",
+    "clsx": "^2.1.1",
+    "date-fns": "^3.6.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8.4.38",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "sass": "^1.77.2",
+    "styled-components": "^6.1.11",
     "tailwindcss": "^3.4.3",
     "ts-jest": "^29.1.4",
     "ts-node": "^10.9.2",

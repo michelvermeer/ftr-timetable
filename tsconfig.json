@@ -27,7 +27,7 @@
     "src",
     "postcss.config.js",
     "tailwind.config.js",
-    "vite.config.ts",
+    // "vite.config.ts",
     "tsconfig.node.json",
     "jest.config.js",
     "jest.setup.ts"
