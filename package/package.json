@@ -2,7 +2,7 @@
   "name": "ftr-timetable",
   "description": "A versatile timetable component for React",
   "private": false,
-  "version": "1.0.7",
+  "version": "1.0.8",
   "type": "module",
   "types": "dist/index.d.ts",
   "main": "dist/index.umd.js",
@@ -16,7 +16,7 @@
       "require": "./dist/index.umd.js",
       "types": "./dist/index.d.ts"
     },
-    "./styles": "./dist/style.css"
+    "./dist/style.css": "./dist/style.css"
   },
   "files": [
     "/dist"

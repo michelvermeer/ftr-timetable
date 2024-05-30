@@ -3,13 +3,27 @@
 A versatile, configurable and responsive timetable component for React.
 Ideal for showing the agenda for locations on a specific date.
 
-### Installation
+## Installation
 
 ```
 npm i ftr-timetable
 ```
 
-### Usage example
+### Include CSS
+
+Import in your CSS
+
+```css
+@import url("/node_modules/ftr-timetable/dist/style.css");
+```
+
+Import in your module
+
+```ts
+import "ftr-timetable/dist/style.css";
+```
+
+## Usage example
 
 ```ts
 import { TimeTable, TimeTableItem, TimeTableLocation } from "ftr-timetable";
