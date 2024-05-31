@@ -11,20 +11,6 @@ Ideal for showing the agenda for locations on a specific date.
 npm i ftr-timetable
 ```
 
-### Include CSS
-
-Import in your CSS
-
-```css
-@import url("/node_modules/ftr-timetable/dist/style.css");
-```
-
-Import in your module
-
-```ts
-import "ftr-timetable/dist/style.css";
-```
-
 ## Usage example
 
 ```ts

@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import {
   addHours,
   differenceInMinutes,
@@ -8,6 +7,12 @@ import {
 } from "date-fns";
 import React, { useEffect, useMemo } from "react";
 import { useTimeTableContext } from "./hooks/useTimeTable";
+import styled from "styled-components";
+
+const TimeTableMarkerContainer = styled.div`
+  position: absolute;
+  background-color: #9f5cf1;
+`;
 
 export const TimeTableMarker = React.memo(function ({
   date,
@@ -47,16 +52,14 @@ export const TimeTableMarker = React.memo(function ({
   }
 
   return (
-    <div
-      className={clsx(
-        "absolute bg-purple-700",
-        displayStyle === "horizontal"
-          ? "h-1/3 top-0 w-[2px]"
-          : "w-4/5 left-0 h-[2px]"
-      )}
+    <TimeTableMarkerContainer
       style={{
-        [displayStyle === "horizontal" ? "left" : "top"]: `${position}px`,
+        width: displayStyle === "horizontal" ? "2px" : "80%",
+        height: displayStyle === "horizontal" ? "33.333333%" : "2px",
+        left: displayStyle === "horizontal" ? `${position}px` : 0,
+        top: displayStyle === "horizontal" ? 0 : `${position}px`,
+        // [displayStyle === "horizontal" ? "left" : "top"]: `${position}px`,
       }}
-    ></div>
+    />
   );
 });

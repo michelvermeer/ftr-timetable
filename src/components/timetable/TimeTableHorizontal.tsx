@@ -1,6 +1,5 @@
 import React from "react";
 import { format } from "date-fns";
-import clsx from "clsx";
 import { type TimeTableLocation, TimeTableView } from "./TimeTable";
 import styled from "styled-components";
 import { TimeTableMarker } from "./TimeTableMarker";
@@ -20,6 +19,11 @@ const TimeTableContainer = styled.div`
   width: 100%;
   max-height: 100%;
   max-width: 100vw;
+  box-sizing: border-box !important;
+
+  * {
+    box-sizing: border-box !important;
+  }
 `;
 
 const TimeTableInner = styled.div`
@@ -28,6 +32,109 @@ const TimeTableInner = styled.div`
   height: 100%;
   left: 0;
   top: 0;
+
+  .ftr-timetable-datetime {
+    display: flex;
+    flex-direction: row;
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    background-color: #1f2937;
+    border-bottom: 2px solid #374151;
+    width: 100%;
+    height: 44px;
+
+    &__date {
+      position: sticky;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      background-color: #1f2937;
+      border-right: 2px solid #374151;
+      display: flex;
+      justify-content: space-between;
+      width: 10rem;
+      height: 100%;
+      flex-shrink: 0;
+      flex-direction: row;
+      padding: 0 0.25rem;
+
+      select {
+        background-color: transparent;
+        color: #fff;
+        border: none;
+        outline: none;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        width: 100%;
+      }
+    }
+
+    &__hours {
+      display: flex;
+      flex-direction: row;
+      position: relative;
+      background-color: #1f2937;
+      width: 100%;
+      height: 100%;
+    }
+
+    &__hour {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      width: 60px;
+      padding-left: 0.25rem;
+      padding-bottom: 0.25rem;
+      font-size: 0.75rem;
+      height: 100%;
+
+      &:not(:first-child) {
+        border-left: solid 2px #374151;
+      }
+    }
+  }
+`;
+
+const TimeTableLocationContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  border-bottom: 2px solid #374151;
+  background-color: #1f2937;
+  height: 60px;
+
+  .ftr-timetable-location {
+    background-color: #000;
+    border-right: 2px solid #374151;
+    display: flex;
+    align-items: center;
+    width: 10rem;
+    padding: 0 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    position: sticky;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 2;
+
+    &__name {
+      color: #fff;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+  }
+
+  .ftr-timetable-location-items {
+    flex: 1;
+    position: relative;
+    height: 100%;
+    background-color: #1f2937;
+  }
 `;
 
 const TimeTableLocation = React.memo(function ({
@@ -35,7 +142,7 @@ const TimeTableLocation = React.memo(function ({
 }: {
   location: TimeTableLocation;
 }) {
-  const { items } = useTimeTableContext();
+  const { items, onLocationClick } = useTimeTableContext();
   const itemsForLocation = items.filter(
     (item) => item.locationId === location.id
   );
@@ -43,15 +150,16 @@ const TimeTableLocation = React.memo(function ({
   const itemWithIntersection = useItemIntersections(itemsForLocation);
 
   return (
-    <div className="flex border-b-2 border-b-slate-700 h-[60px]">
+    <TimeTableLocationContainer>
       <div
         data-testid={`timetable-location-${location.id}`}
         title={location.name}
-        className="w-40 h-full px-2 flex text-sm items-center sticky bg-black z-[2] top-0 left-0 border-r-2 border-r-slate-700"
+        className="ftr-timetable-location ftr-timetable-location__horizontal"
+        onClick={() => onLocationClick?.(location)}
       >
-        <div className="w-full line-clamp-2 text-ellipsis">{location.name}</div>
+        <div className="ftr-timetable-location__name">{location.name}</div>
       </div>
-      <div className="bg-slate-800 flex-1 relative h-full">
+      <div className="ftr-timetable-location-items">
         {itemWithIntersection.map((item, i) => {
           return (
             <TimeTableItem
@@ -63,7 +171,7 @@ const TimeTableLocation = React.memo(function ({
           );
         })}
       </div>
-    </div>
+    </TimeTableLocationContainer>
   );
 });
 
@@ -79,16 +187,15 @@ export const TimeTableHorizontal: React.FC<TimeTableView> = ({
     <TimeTableContainer
       ref={ref}
       data-testid="timetable-horizontal"
-      className="ftr-timetable ftr-timetable-horizontal"
+      className="ftr-timetable ftr-timetable__horizontal"
       style={{ height: `${locations.length * 60 + 50}px` }}
     >
       <TimeTableInner style={{ minWidth: `${hours.length * 60 + 160}px` }}>
-        <div className="flex sticky top-0 z-[3] border-b-2 border-b-slate-700 w-full">
-          <div className="w-40 shrink-0 sticky bg-slate-900 z-[2] px-1 h-12 flex flex-col justify-center top-0 left-0 border-r-2 border-r-slate-700">
+        <div className="ftr-timetable-datetime">
+          <div className="ftr-timetable-datetime__date">
             <select
               value={selectedDate}
               onChange={(e) => dateChange(e.target.value)}
-              className="bg-transparent !border-none !outline-none text-sm"
             >
               {dates.map((dt) => {
                 return (
@@ -99,16 +206,10 @@ export const TimeTableHorizontal: React.FC<TimeTableView> = ({
               })}
             </select>
           </div>
-          <div className="bg-slate-900 flex flex-row w-full relative">
+          <div className="ftr-timetable-datetime__hours">
             {hours.map((hour, i) => {
               return (
-                <div
-                  className={clsx(
-                    "w-[60px] flex items-end text-xs pl-1 pb-1",
-                    i > 0 && "border-l border-l-slate-700"
-                  )}
-                  key={`hour_${i}`}
-                >
+                <div className="ftr-timetable-datetime__hour" key={`hour_${i}`}>
                   {hour.display}
                 </div>
               );

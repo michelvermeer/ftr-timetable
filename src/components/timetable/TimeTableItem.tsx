@@ -7,6 +7,7 @@ import {
   subDays,
 } from "date-fns";
 import { useTimeTableContext } from "./hooks/useTimeTable";
+import styled from "styled-components";
 
 export interface TimeTableItem {
   id: string | number;
@@ -20,6 +21,69 @@ export interface TimeTableItem {
 export interface TimeTableRenderedItem<T> extends Omit<TimeTableItem, "data"> {
   data?: T;
 }
+
+const TimeTableItemVerticalContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 0 0.5rem;
+`;
+
+const TimeTableItemHorizontalContainer = styled.div`
+  position: absolute;
+  height: 100%;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 1px 0;
+`;
+
+const TimeTableItemInner = styled.div`
+  position: relative;
+  height: 100%;
+  padding: 1px;
+
+  .ftr-timetable-item {
+    display: flex;
+    position: relative;
+    height: 100%;
+    color: #fff;
+    background-color: #304151;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #374151;
+    }
+
+    &__vertical {
+      padding: 0.25rem;
+      flex-direction: column;
+
+      .ftr-timetable-item__inner {
+        top: 62px;
+      }
+    }
+
+    &__horizontal {
+      padding: 0.125rem 0.25rem;
+      flex-direction: row;
+
+      .ftr-timetable-item__inner {
+        left: 164px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+      }
+    }
+
+    &__inner {
+      position: sticky;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 12px;
+    }
+  }
+`;
 
 const TimeTableItemVertical = React.memo(function ({
   item,
@@ -36,8 +100,7 @@ const TimeTableItemVertical = React.memo(function ({
 }) {
   const { onItemClick, renderItem } = useTimeTableContext();
   return (
-    <div
-      className="px-1 text-sm w-full absolute"
+    <TimeTableItemVerticalContainer
       title={item.name}
       style={{
         top: `${eventStartOffset}px`,
@@ -46,18 +109,18 @@ const TimeTableItemVertical = React.memo(function ({
         maxWidth: `calc(100% / ${intersections + 1})`,
       }}
     >
-      <div className="relative h-full" onClick={() => onItemClick?.(item)}>
+      <TimeTableItemInner onClick={() => onItemClick?.(item)}>
         {renderItem ? (
           renderItem(item)
         ) : (
-          <div className="bg-slate-400 hover:bg-slate-300 text-slate-800 cursor-pointer ftr-timetable__item flex flex-col relative h-full p-1">
-            <div className="sticky text-[12px] top-[62px] text-ellipsis overflow-hidden">
+          <div className="ftr-timetable-item ftr-timetable-item__vertical">
+            <div className="ftr-timetable-item__inner">
               <div>{item.name}</div>
             </div>
           </div>
         )}
-      </div>
-    </div>
+      </TimeTableItemInner>
+    </TimeTableItemVerticalContainer>
   );
 });
 
@@ -76,8 +139,7 @@ const TimeTableItemHorizontal = React.memo(function ({
 }) {
   const { onItemClick, renderItem } = useTimeTableContext();
   return (
-    <div
-      className="py-[1px] text-sm h-full absolute"
+    <TimeTableItemHorizontalContainer
       title={item.name}
       style={{
         left: `${eventStartOffset}px`,
@@ -86,18 +148,16 @@ const TimeTableItemHorizontal = React.memo(function ({
         maxHeight: `calc(100% / ${intersections + 1})`,
       }}
     >
-      <div className="relative h-full" onClick={() => onItemClick?.(item)}>
+      <TimeTableItemInner onClick={() => onItemClick?.(item)}>
         {renderItem ? (
           renderItem(item)
         ) : (
-          <div className="bg-slate-400 hover:bg-slate-300 ftr-timetable__item cursor-pointer text-slate-800 flex relative h-full px-1 py-0.5">
-            <div className="sticky text-[12px] left-[164px] line-clamp-2 text-ellipsis overflow-hidden">
-              {item.name}
-            </div>
+          <div className="ftr-timetable-item ftr-timetable-item__horizontal">
+            <div className="ftr-timetable-item__inner">{item.name}</div>
           </div>
         )}
-      </div>
-    </div>
+      </TimeTableItemInner>
+    </TimeTableItemHorizontalContainer>
   );
 });
 

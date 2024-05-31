@@ -46,8 +46,8 @@ export const timetableMockItems: TimeTableItem[] = [
   },
   {
     id: "e5",
-    startDate: "2024-05-26T08:00:00",
-    endDate: "2024-05-26T13:00:00",
+    startDate: "2024-05-31T08:00:00",
+    endDate: "2024-05-31T13:00:00",
     name: "Event 5",
     locationId: 1,
   },

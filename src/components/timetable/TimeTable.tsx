@@ -16,6 +16,7 @@ export interface TimeTable {
   numberOfHours?: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onItemClick?: (item: TimeTableRenderedItem<any>) => void;
+  onLocationClick?: (location: TimeTableLocation) => void;
   onDateChange?: (date: string) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   renderItem?: (item: TimeTableRenderedItem<any>) => React.ReactNode;
@@ -45,6 +46,7 @@ export const TimeTable: React.FC<TimeTable> = ({
   items: individualItems,
   dates,
   onItemClick,
+  onLocationClick,
   onDateChange,
   variant,
   renderItem,
@@ -101,6 +103,7 @@ export const TimeTable: React.FC<TimeTable> = ({
       startingHour={startingHour}
       numberOfHours={numberOfHours}
       onItemClick={onItemClick}
+      onLocationClick={onLocationClick}
       displayStyle={displayStyle}
       renderItem={renderItem}
       selectedDate={selectedDate}

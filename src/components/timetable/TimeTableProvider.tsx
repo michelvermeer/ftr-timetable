@@ -4,6 +4,7 @@ import { TimeTableItem } from "./TimeTableItem";
 
 export interface TimeTableContext {
   onItemClick?: TimeTable["onItemClick"];
+  onLocationClick?: TimeTable["onLocationClick"];
   renderItem?: TimeTable["renderItem"];
   items: TimeTableItem[];
   startingHour: number;

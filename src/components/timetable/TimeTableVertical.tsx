@@ -1,6 +1,5 @@
 import React from "react";
 import { format } from "date-fns";
-import clsx from "clsx";
 import { type TimeTableLocation, TimeTableView } from "./TimeTable";
 import styled from "styled-components";
 import { TimeTableMarker } from "./TimeTableMarker";
@@ -18,6 +17,11 @@ const TimeTableContainer = styled.div`
   max-width: 100vw;
   position: relative;
   overflow: auto;
+  box-sizing: border-box !important;
+
+  * {
+    box-sizing: border-box !important;
+  }
 `;
 
 const TimeTableInner = styled.div`
@@ -27,6 +31,114 @@ const TimeTableInner = styled.div`
   left: 0;
   top: 0;
   transform: translateY(-1px);
+
+  .ftr-timetable-datetime {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    &__container {
+      width: 8rem;
+      border-right: 2px solid #374151;
+      background-color: #1f2937;
+      position: sticky;
+      left: 0;
+      top: 0;
+      z-index: 3;
+    }
+
+    &__date {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: center;
+      width: 100%;
+      height: 60px;
+      padding: 0 0.25rem;
+      background-color: #1f2937;
+      border-bottom: 2px solid #374151;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+
+      select {
+        background-color: transparent;
+        color: #fff;
+        border: none;
+        outline: none;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+      }
+    }
+
+    &__hours {
+      position: relative;
+      z-index: 1;
+    }
+
+    &__hour {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      height: 60px;
+      padding-top: 0.25rem;
+      padding-right: 0.5rem;
+      position: relative;
+      z-index: 2;
+      font-size: 0.75rem;
+      line-height: 1rem;
+
+      &:not(:first-child) {
+        border-top: 2px solid #374151;
+      }
+    }
+  }
+
+  .ftr-timetable-locations {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    position: relative;
+  }
+`;
+
+const TimeTableLocationContainer = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  border-right: 2px solid #374151;
+
+  .ftr-timetable-location {
+    background-color: #000;
+    border-bottom: 2px solid #374151;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    height: 60px;
+
+    &__name {
+      width: 100%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+  }
+
+  .ftr-timetable-location-items {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    position: relative;
+    background-color: #1f2937;
+  }
 `;
 
 const TimeTableLocation = React.memo(function ({
@@ -34,7 +146,7 @@ const TimeTableLocation = React.memo(function ({
 }: {
   location: TimeTableLocation;
 }) {
-  const { items } = useTimeTableContext();
+  const { items, onLocationClick } = useTimeTableContext();
   const itemsForLocation = items.filter(
     (item) => item.locationId === location.id
   );
@@ -42,15 +154,16 @@ const TimeTableLocation = React.memo(function ({
   const itemWithIntersection = useItemIntersections(itemsForLocation);
 
   return (
-    <div className="flex flex-1 flex-col border-r-2 border-r-slate-700">
+    <TimeTableLocationContainer>
       <div
         data-testid={`timetable-location-${location.id}`}
         title={location.name}
-        className="sticky bg-black px-2 flex h-[60px] text-sm items-center top-0 z-[2] border-b-2 border-b-slate-700"
+        className="ftr-timetable-location ftr-timetable-location__vertical"
+        onClick={() => onLocationClick?.(location)}
       >
-        <div className="w-full line-clamp-2 text-ellipsis">{location.name}</div>
+        <div className="ftr-timetable-location__name">{location.name}</div>
       </div>
-      <div className="bg-slate-800 flex-1 relative">
+      <div className="ftr-timetable-location-items">
         {itemWithIntersection.map((item, j) => (
           <TimeTableItem
             item={item.item}
@@ -60,7 +173,7 @@ const TimeTableLocation = React.memo(function ({
           />
         ))}
       </div>
-    </div>
+    </TimeTableLocationContainer>
   );
 });
 
@@ -80,15 +193,14 @@ export const TimeTableVertical: React.FC<TimeTableView> = ({
     >
       <TimeTableInner>
         <div
-          className="flex flex-row w-full"
+          className="ftr-timetable-datetime"
           style={{ minWidth: `${locations.length * 200}px` }}
         >
-          <div className="w-32 border-r-2 border-r-slate-700 bg-slate-900 sticky left-0 top-0 z-[3]">
-            <div className="sticky bg-slate-900 px-1 h-[60px] flex justify-end items-center top-0 z-[2] border-b-2 border-b-slate-700">
+          <div className="ftr-timetable-datetime__container">
+            <div className="ftr-timetable-datetime__date">
               <select
                 value={selectedDate}
                 onChange={(e) => dateChange(e.target.value)}
-                className="bg-transparent !border-none !outline-none text-sm"
               >
                 {dates.map((dt) => {
                   return (
@@ -99,15 +211,12 @@ export const TimeTableVertical: React.FC<TimeTableView> = ({
                 })}
               </select>
             </div>
-            <div className="relative z-[1]">
+            <div className="ftr-timetable-datetime__hours">
               {hours.map((hour, i) => {
                 return (
                   <div
                     key={`hour_${i}`}
-                    className={clsx(
-                      "h-[60px] flex justify-end text-xs pr-2 relative z-[2] pt-1",
-                      i > 0 && "border-t border-t-slate-700"
-                    )}
+                    className="ftr-timetable-datetime__hour"
                   >
                     {hour.display}
                   </div>
@@ -116,7 +225,7 @@ export const TimeTableVertical: React.FC<TimeTableView> = ({
               <TimeTableMarker date={selectedDate} />
             </div>
           </div>
-          <div className="flex flex-row flex-1 relative">
+          <div className="ftr-timetable-locations">
             {locations.map((location, i) => (
               <TimeTableLocation location={location} key={`location_${i}`} />
             ))}
