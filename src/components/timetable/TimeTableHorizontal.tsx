@@ -1,6 +1,10 @@
 import React from "react";
 import { format } from "date-fns";
-import { type TimeTableLocation, TimeTableView } from "./TimeTable";
+import {
+  type TimeTableLocation,
+  TimeTableView,
+  TimeTableStyles,
+} from "./TimeTable";
 import styled from "styled-components";
 import { TimeTableMarker } from "./TimeTableMarker";
 import { TimeTableItem } from "./TimeTableItem";
@@ -26,12 +30,13 @@ const TimeTableContainer = styled.div`
   }
 `;
 
-const TimeTableInner = styled.div`
+const TimeTableInner = styled.div<{ styles?: TimeTableStyles }>`
   position: absolute;
   width: 100%;
   height: 100%;
   left: 0;
   top: 0;
+  color: ${(props) => props.styles?.textColor || "#fff"};
 
   .ftr-timetable-datetime {
     display: flex;
@@ -39,8 +44,10 @@ const TimeTableInner = styled.div`
     position: sticky;
     top: 0;
     z-index: 3;
-    background-color: #1f2937;
-    border-bottom: 2px solid #374151;
+    background-color: ${(props) =>
+      props.styles?.dateBackgroundColor || "#1f2937"};
+    border-bottom: ${(props) =>
+      props.styles?.borderStyle || "solid 2px #374151"};
     width: 100%;
     height: 44px;
 
@@ -49,8 +56,10 @@ const TimeTableInner = styled.div`
       top: 0;
       left: 0;
       z-index: 2;
-      background-color: #1f2937;
-      border-right: 2px solid #374151;
+      background-color: ${(props) =>
+        props.styles?.dateBackgroundColor || "#1f2937"};
+      border-right: ${(props) =>
+        props.styles?.borderStyle || "solid 2px #374151"};
       display: flex;
       justify-content: space-between;
       width: 10rem;
@@ -61,7 +70,7 @@ const TimeTableInner = styled.div`
 
       select {
         background-color: transparent;
-        color: #fff;
+        color: ${(props) => props.styles?.textColor || "#fff"};
         border: none;
         outline: none;
         font-size: 0.875rem;
@@ -74,7 +83,8 @@ const TimeTableInner = styled.div`
       display: flex;
       flex-direction: row;
       position: relative;
-      background-color: #1f2937;
+      background-color: ${(props) =>
+        props.styles?.dateBackgroundColor || "#1f2937"};
       width: 100%;
       height: 100%;
     }
@@ -90,36 +100,43 @@ const TimeTableInner = styled.div`
       height: 100%;
 
       &:not(:first-child) {
-        border-left: solid 2px #374151;
+        border-left: ${(props) =>
+          props.styles?.borderStyle || "solid 2px #374151"};
       }
     }
   }
 `;
 
-const TimeTableLocationContainer = styled.div`
+const TimeTableLocationContainer = styled.div<{ styles?: TimeTableStyles }>`
   display: flex;
   flex-direction: row;
-  border-bottom: 2px solid #374151;
-  background-color: #1f2937;
+  border-bottom: ${(props) => props.styles?.borderStyle || "solid 2px #374151"};
+  background-color: ${(props) => props.styles?.backgroundColor || "#1f2937"};
   height: 60px;
 
   .ftr-timetable-location {
-    background-color: #000;
-    border-right: 2px solid #374151;
-    display: flex;
-    align-items: center;
+    height: 100%;
     width: 10rem;
-    padding: 0 0.5rem;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
+    z-index: 2;
     position: sticky;
     top: 0;
     left: 0;
-    height: 100%;
-    z-index: 2;
+    color: ${(props) => props.styles?.locationTextColor || "inherit"};
+    background-color: ${(props) =>
+      props.styles?.locationBackgroundColor || "#000"};
+    border-right: ${(props) =>
+      props.styles?.borderStyle || "solid 2px #374151"};
+
+    &__inner {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      padding: 0 0.5rem;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
 
     &__name {
-      color: #fff;
       width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -133,7 +150,7 @@ const TimeTableLocationContainer = styled.div`
     flex: 1;
     position: relative;
     height: 100%;
-    background-color: #1f2937;
+    background-color: ${(props) => props.styles?.backgroundColor || "#1f2937"};
   }
 `;
 
@@ -142,7 +159,8 @@ const TimeTableLocation = React.memo(function ({
 }: {
   location: TimeTableLocation;
 }) {
-  const { items, onLocationClick } = useTimeTableContext();
+  const { items, onLocationClick, renderLocation, styles } =
+    useTimeTableContext();
   const itemsForLocation = items.filter(
     (item) => item.locationId === location.id
   );
@@ -150,15 +168,22 @@ const TimeTableLocation = React.memo(function ({
   const itemWithIntersection = useItemIntersections(itemsForLocation);
 
   return (
-    <TimeTableLocationContainer>
+    <TimeTableLocationContainer styles={styles}>
       <div
+        className="ftr-timetable-location ftr-timetable-location__horizontal"
         data-testid={`timetable-location-${location.id}`}
         title={location.name}
-        className="ftr-timetable-location ftr-timetable-location__horizontal"
         onClick={() => onLocationClick?.(location)}
       >
-        <div className="ftr-timetable-location__name">{location.name}</div>
+        {renderLocation ? (
+          renderLocation(location)
+        ) : (
+          <div className="ftr-timetable-location__inner">
+            <div className="ftr-timetable-location__name">{location.name}</div>
+          </div>
+        )}
       </div>
+
       <div className="ftr-timetable-location-items">
         {itemWithIntersection.map((item, i) => {
           return (
@@ -182,7 +207,7 @@ export const TimeTableHorizontal: React.FC<TimeTableView> = ({
   hours,
   selectedDate,
 }) => {
-  const { ref } = useTimeTableContext();
+  const { ref, styles } = useTimeTableContext();
   return (
     <TimeTableContainer
       ref={ref}
@@ -190,7 +215,10 @@ export const TimeTableHorizontal: React.FC<TimeTableView> = ({
       className="ftr-timetable ftr-timetable__horizontal"
       style={{ height: `${locations.length * 60 + 50}px` }}
     >
-      <TimeTableInner style={{ minWidth: `${hours.length * 60 + 160}px` }}>
+      <TimeTableInner
+        styles={styles}
+        style={{ minWidth: `${hours.length * 60 + 160}px` }}
+      >
         <div className="ftr-timetable-datetime">
           <div className="ftr-timetable-datetime__date">
             <select

@@ -1,16 +1,18 @@
 import React, { createContext, createRef } from "react";
-import { TimeTable } from "./TimeTable";
+import { TimeTable, TimeTableStyles } from "./TimeTable";
 import { TimeTableItem } from "./TimeTableItem";
 
-export interface TimeTableContext {
-  onItemClick?: TimeTable["onItemClick"];
-  onLocationClick?: TimeTable["onLocationClick"];
-  renderItem?: TimeTable["renderItem"];
+export interface TimeTableContext
+  extends Pick<
+    TimeTable,
+    "onItemClick" | "onLocationClick" | "renderItem" | "renderLocation"
+  > {
   items: TimeTableItem[];
   startingHour: number;
   numberOfHours: number;
   displayStyle: TimeTable["variant"];
   selectedDate: string;
+  styles: TimeTableStyles;
   ref: React.RefObject<HTMLDivElement>;
 }
 

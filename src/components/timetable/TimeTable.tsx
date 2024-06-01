@@ -7,19 +7,33 @@ import { useItemsInRange } from "./hooks/useItemsInRange";
 import { useTimetableDates } from "./hooks/useTimetableDates";
 import { useItems } from "./hooks/useItems";
 
+export interface TimeTableStyles {
+  backgroundColor?: string;
+  borderStyle?: string;
+  dateBackgroundColor?: string;
+  itemBackgroundColor?: string;
+  itemHoverBackgroundColor?: string;
+  itemTextColor?: string;
+  locationBackgroundColor?: string;
+  locationTextColor?: string;
+  textColor?: string;
+}
+
 export interface TimeTable {
   locations: TimeTableLocation[];
   items?: TimeTableItem[];
-  variant?: "horizontal" | "vertical"; // Set default value to "horizontal"
+  variant?: "horizontal" | "vertical";
   startingHour?: number;
   dates?: string[];
   numberOfHours?: number;
+  styles?: TimeTableStyles;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onItemClick?: (item: TimeTableRenderedItem<any>) => void;
   onLocationClick?: (location: TimeTableLocation) => void;
   onDateChange?: (date: string) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   renderItem?: (item: TimeTableRenderedItem<any>) => React.ReactNode;
+  renderLocation?: (location: TimeTableLocation) => React.ReactNode;
 }
 
 export interface TimeTableLocation {
@@ -50,9 +64,23 @@ export const TimeTable: React.FC<TimeTable> = ({
   onDateChange,
   variant,
   renderItem,
+  renderLocation,
   startingHour = 6,
   numberOfHours = 24,
+  styles: customStyles,
 }) => {
+  const styles = useMemo<TimeTableStyles>(() => {
+    const styles: TimeTableStyles = {
+      backgroundColor: "#1f2937",
+      dateBackgroundColor: "#1f2937",
+      textColor: "#fff",
+      borderStyle: "solid 2px #374151",
+      ...customStyles,
+    };
+
+    return styles;
+  }, [customStyles]);
+
   const [selectedDate, setSelectedDate] = useState<string>();
   const items = useItems(locations, individualItems);
   const itemsInRange = useItemsInRange(
@@ -106,8 +134,10 @@ export const TimeTable: React.FC<TimeTable> = ({
       onLocationClick={onLocationClick}
       displayStyle={displayStyle}
       renderItem={renderItem}
+      renderLocation={renderLocation}
       selectedDate={selectedDate}
       items={itemsInRange}
+      styles={styles}
     >
       {displayStyle === "horizontal" ? (
         <TimeTableHorizontal

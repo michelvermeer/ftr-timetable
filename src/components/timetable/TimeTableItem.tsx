@@ -8,6 +8,7 @@ import {
 } from "date-fns";
 import { useTimeTableContext } from "./hooks/useTimeTable";
 import styled from "styled-components";
+import { TimeTableStyles } from "./TimeTable";
 
 export interface TimeTableItem {
   id: string | number;
@@ -38,7 +39,7 @@ const TimeTableItemHorizontalContainer = styled.div`
   padding: 1px 0;
 `;
 
-const TimeTableItemInner = styled.div`
+const TimeTableItemInner = styled.div<{ styles?: TimeTableStyles }>`
   position: relative;
   height: 100%;
   padding: 1px;
@@ -47,12 +48,16 @@ const TimeTableItemInner = styled.div`
     display: flex;
     position: relative;
     height: 100%;
-    color: #fff;
-    background-color: #304151;
+    color: ${(props) => props.styles?.itemTextColor || "inherit"};
+    background-color: ${(props) =>
+      props.styles?.itemBackgroundColor || "#304151"};
     cursor: pointer;
 
     &:hover {
-      background-color: #374151;
+      background-color: ${(props) =>
+        props.styles?.itemHoverBackgroundColor ||
+        props.styles?.itemBackgroundColor ||
+        "#374151"};
     }
 
     &__vertical {
@@ -98,7 +103,7 @@ const TimeTableItemVertical = React.memo(function ({
   intersections: number;
   offset: number;
 }) {
-  const { onItemClick, renderItem } = useTimeTableContext();
+  const { onItemClick, renderItem, styles } = useTimeTableContext();
   return (
     <TimeTableItemVerticalContainer
       title={item.name}
@@ -109,7 +114,7 @@ const TimeTableItemVertical = React.memo(function ({
         maxWidth: `calc(100% / ${intersections + 1})`,
       }}
     >
-      <TimeTableItemInner onClick={() => onItemClick?.(item)}>
+      <TimeTableItemInner styles={styles} onClick={() => onItemClick?.(item)}>
         {renderItem ? (
           renderItem(item)
         ) : (
@@ -137,7 +142,7 @@ const TimeTableItemHorizontal = React.memo(function ({
   intersections: number;
   offset: number;
 }) {
-  const { onItemClick, renderItem } = useTimeTableContext();
+  const { onItemClick, renderItem, styles } = useTimeTableContext();
   return (
     <TimeTableItemHorizontalContainer
       title={item.name}
@@ -148,7 +153,7 @@ const TimeTableItemHorizontal = React.memo(function ({
         maxHeight: `calc(100% / ${intersections + 1})`,
       }}
     >
-      <TimeTableItemInner onClick={() => onItemClick?.(item)}>
+      <TimeTableItemInner styles={styles} onClick={() => onItemClick?.(item)}>
         {renderItem ? (
           renderItem(item)
         ) : (

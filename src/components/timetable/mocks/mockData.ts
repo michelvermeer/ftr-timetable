@@ -32,9 +32,9 @@ export const timetableMockItems: TimeTableItem[] = [
     name: "Main Event",
     locationId: 1,
     data: {
-      type: "music",
-      location: "Main stage",
-      age: 18,
+      type: "Music",
+      category: "Music",
+      isFree: true,
     },
   },
   {
@@ -43,6 +43,11 @@ export const timetableMockItems: TimeTableItem[] = [
     endDate: "2024-05-25T16:30:00",
     name: "Event 2",
     locationId: 1,
+    data: {
+      type: "Music",
+      category: "Music",
+      isFree: true,
+    },
   },
   {
     id: "e5",
