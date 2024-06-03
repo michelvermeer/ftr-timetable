@@ -25,11 +25,19 @@ export default defineConfig(({ mode }) => {
           fileName: (format) => `index.${format}.js`,
         },
         rollupOptions: {
-          external: ["react", "react-dom"],
+          input: path.resolve(__dirname, "src/index.ts"),
+          external: [
+            "react",
+            "date-fns",
+            "styled-components",
+            "react/jsx-runtime",
+          ],
           output: {
             globals: {
               react: "React",
-              "react-dom": "ReactDOM",
+              "date-fns": "dateFns",
+              "styled-components": "styledComponents",
+              "react/jsx-runtime": "react/jsx-runtime",
             },
           },
         },
