@@ -2,7 +2,7 @@
   "name": "ftr-timetable",
   "description": "A versatile timetable component for React",
   "private": false,
-  "version": "1.4.1",
+  "version": "1.4.2",
   "type": "module",
   "types": "dist/index.d.ts",
   "main": "dist/index.umd.js",
@@ -25,7 +25,7 @@
     "type": "git",
     "url": "git+https://github.com/michelvermeer/ftr-timetable.git"
   },
-  "devDependencies": {
+  "dependencies": {
     "date-fns": "^3.6.0",
     "styled-components": "^6.1.11"
   },
