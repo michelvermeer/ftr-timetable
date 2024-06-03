@@ -5,6 +5,13 @@ Ideal for showing the agenda for locations on a specific date.
 
 ![Example](https://github.com/michelvermeer/ftr-timetable/blob/main/src/assets/ftr-timetable-example.png?raw=true)
 
+### Changes in version 1.4.0
+
+- Fixed styled components warning messages for custom styles
+- Fixed offset of current time indicator
+- Current time indicator is now customisable
+- Items with invalid dates are filtered out from the timetable
+
 ## Installation
 
 ```
@@ -160,3 +167,4 @@ Options
 | locationBackgroundColor  | _string_ | #000              | Background color of a location                                    |
 | locationTextColor        | _string_ | inherit           | Text color of a location                                          |
 | textColor                | _string_ | #fff              | General text color used in the timetable                          |
+| timeMarkerColor          | _string_ | #666              | Color of the current time indicator                               |

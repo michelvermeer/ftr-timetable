@@ -11,7 +11,7 @@ import styled from "styled-components";
 
 const TimeTableMarkerContainer = styled.div`
   position: absolute;
-  background-color: #9f5cf1;
+  box-shadow: -1px -1px 2px 0 rgba(0, 0, 0, 0.2);
 `;
 
 export const TimeTableMarker = React.memo(function ({
@@ -19,19 +19,19 @@ export const TimeTableMarker = React.memo(function ({
 }: {
   date: string;
 }) {
-  const { ref, displayStyle } = useTimeTableContext();
+  const { ref, displayStyle, startingHour, styles } = useTimeTableContext();
   const position = useMemo<number>(() => {
     const dateString = format(new Date(date), "yyyy-MM-dd");
-    const nowString = format(subHours(new Date(), 6), "yyyy-MM-dd");
+    const nowString = format(subHours(new Date(), startingHour), "yyyy-MM-dd");
     if (dateString !== nowString) {
       return -1;
     }
-    const start = addHours(startOfDay(new Date(date)), 6);
+    const start = addHours(startOfDay(new Date(date)), startingHour);
     const now = new Date();
     const diff = differenceInMinutes(now, start);
 
     return Math.max(diff, 0);
-  }, [date]);
+  }, [date, startingHour]);
 
   useEffect(() => {
     if (typeof document === "undefined" || !ref.current) {
@@ -54,11 +54,11 @@ export const TimeTableMarker = React.memo(function ({
   return (
     <TimeTableMarkerContainer
       style={{
+        backgroundColor: styles.timeMarkerColor || "#666",
         width: displayStyle === "horizontal" ? "2px" : "80%",
         height: displayStyle === "horizontal" ? "33.333333%" : "2px",
         left: displayStyle === "horizontal" ? `${position}px` : 0,
         top: displayStyle === "horizontal" ? 0 : `${position}px`,
-        // [displayStyle === "horizontal" ? "left" : "top"]: `${position}px`,
       }}
     />
   );

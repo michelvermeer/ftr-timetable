@@ -2,7 +2,7 @@
   "name": "ftr-timetable",
   "description": "A versatile timetable component for React",
   "private": false,
-  "version": "1.3.0",
+  "version": "1.4.0",
   "type": "module",
   "types": "package/dist/index.d.ts",
   "main": "package/dist/index.umd.js",

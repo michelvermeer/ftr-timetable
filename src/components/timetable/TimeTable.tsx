@@ -17,6 +17,7 @@ export interface TimeTableStyles {
   locationBackgroundColor?: string;
   locationTextColor?: string;
   textColor?: string;
+  timeMarkerColor?: string;
 }
 
 export interface TimeTable {
@@ -83,6 +84,7 @@ export const TimeTable: React.FC<TimeTable> = ({
 
   const [selectedDate, setSelectedDate] = useState<string>();
   const items = useItems(locations, individualItems);
+
   const itemsInRange = useItemsInRange(
     items,
     startingHour,

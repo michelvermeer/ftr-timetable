@@ -12,7 +12,15 @@ export const useItems = (
       if (!location.items?.length) {
         continue;
       }
-      for (const item of location.items) {
+      for (const item of location.items.filter((item) => {
+        const startDate = new Date(item.startDate);
+        const endDate = new Date(item.endDate);
+        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+          console.error("Invalid startDate or endDate format", item);
+          return false;
+        }
+        return true;
+      })) {
         items.push({
           ...item,
           locationId: location.id,
@@ -21,7 +29,17 @@ export const useItems = (
     }
 
     if (individualItems?.length) {
-      items = items.concat(individualItems);
+      items = items.concat(
+        individualItems.filter((item) => {
+          const startDate = new Date(item.startDate);
+          const endDate = new Date(item.endDate);
+          if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+            console.error("Invalid startDate or endDate format", item);
+            return false;
+          }
+          return true;
+        })
+      );
     }
 
     return items;

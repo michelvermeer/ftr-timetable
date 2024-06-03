@@ -30,13 +30,13 @@ const TimeTableContainer = styled.div`
   }
 `;
 
-const TimeTableInner = styled.div<{ styles?: TimeTableStyles }>`
+const TimeTableInner = styled.div<{ $styles: TimeTableStyles }>`
   position: absolute;
   width: 100%;
   height: 100%;
   left: 0;
   top: 0;
-  color: ${(props) => props.styles?.textColor || "#fff"};
+  color: ${(props) => props.$styles.textColor || "#fff"};
 
   .ftr-timetable-datetime {
     display: flex;
@@ -45,9 +45,9 @@ const TimeTableInner = styled.div<{ styles?: TimeTableStyles }>`
     top: 0;
     z-index: 3;
     background-color: ${(props) =>
-      props.styles?.dateBackgroundColor || "#1f2937"};
+      props.$styles.dateBackgroundColor || "#1f2937"};
     border-bottom: ${(props) =>
-      props.styles?.borderStyle || "solid 2px #374151"};
+      props.$styles.borderStyle || "solid 2px #374151"};
     width: 100%;
     height: 44px;
 
@@ -57,9 +57,9 @@ const TimeTableInner = styled.div<{ styles?: TimeTableStyles }>`
       left: 0;
       z-index: 2;
       background-color: ${(props) =>
-        props.styles?.dateBackgroundColor || "#1f2937"};
+        props.$styles.dateBackgroundColor || "#1f2937"};
       border-right: ${(props) =>
-        props.styles?.borderStyle || "solid 2px #374151"};
+        props.$styles.borderStyle || "solid 2px #374151"};
       display: flex;
       justify-content: space-between;
       width: 10rem;
@@ -70,7 +70,7 @@ const TimeTableInner = styled.div<{ styles?: TimeTableStyles }>`
 
       select {
         background-color: transparent;
-        color: ${(props) => props.styles?.textColor || "#fff"};
+        color: ${(props) => props.$styles.textColor || "#fff"};
         border: none;
         outline: none;
         font-size: 0.875rem;
@@ -84,7 +84,7 @@ const TimeTableInner = styled.div<{ styles?: TimeTableStyles }>`
       flex-direction: row;
       position: relative;
       background-color: ${(props) =>
-        props.styles?.dateBackgroundColor || "#1f2937"};
+        props.$styles.dateBackgroundColor || "#1f2937"};
       width: 100%;
       height: 100%;
     }
@@ -101,17 +101,17 @@ const TimeTableInner = styled.div<{ styles?: TimeTableStyles }>`
 
       &:not(:first-child) {
         border-left: ${(props) =>
-          props.styles?.borderStyle || "solid 2px #374151"};
+          props.$styles.borderStyle || "solid 2px #374151"};
       }
     }
   }
 `;
 
-const TimeTableLocationContainer = styled.div<{ styles?: TimeTableStyles }>`
+const TimeTableLocationContainer = styled.div<{ $styles: TimeTableStyles }>`
   display: flex;
   flex-direction: row;
-  border-bottom: ${(props) => props.styles?.borderStyle || "solid 2px #374151"};
-  background-color: ${(props) => props.styles?.backgroundColor || "#1f2937"};
+  border-bottom: ${(props) => props.$styles.borderStyle || "solid 2px #374151"};
+  background-color: ${(props) => props.$styles.backgroundColor || "#1f2937"};
   height: 60px;
 
   .ftr-timetable-location {
@@ -121,11 +121,11 @@ const TimeTableLocationContainer = styled.div<{ styles?: TimeTableStyles }>`
     position: sticky;
     top: 0;
     left: 0;
-    color: ${(props) => props.styles?.locationTextColor || "inherit"};
+    color: ${(props) => props.$styles.locationTextColor || "inherit"};
     background-color: ${(props) =>
-      props.styles?.locationBackgroundColor || "#000"};
+      props.$styles.locationBackgroundColor || "#000"};
     border-right: ${(props) =>
-      props.styles?.borderStyle || "solid 2px #374151"};
+      props.$styles.borderStyle || "solid 2px #374151"};
 
     &__inner {
       display: flex;
@@ -150,7 +150,7 @@ const TimeTableLocationContainer = styled.div<{ styles?: TimeTableStyles }>`
     flex: 1;
     position: relative;
     height: 100%;
-    background-color: ${(props) => props.styles?.backgroundColor || "#1f2937"};
+    background-color: ${(props) => props.$styles.backgroundColor || "#1f2937"};
   }
 `;
 
@@ -168,7 +168,7 @@ const TimeTableLocation = React.memo(function ({
   const itemWithIntersection = useItemIntersections(itemsForLocation);
 
   return (
-    <TimeTableLocationContainer styles={styles}>
+    <TimeTableLocationContainer $styles={styles}>
       <div
         className="ftr-timetable-location ftr-timetable-location__horizontal"
         data-testid={`timetable-location-${location.id}`}
@@ -216,7 +216,7 @@ export const TimeTableHorizontal: React.FC<TimeTableView> = ({
       style={{ height: `${locations.length * 60 + 50}px` }}
     >
       <TimeTableInner
-        styles={styles}
+        $styles={styles}
         style={{ minWidth: `${hours.length * 60 + 160}px` }}
       >
         <div className="ftr-timetable-datetime">

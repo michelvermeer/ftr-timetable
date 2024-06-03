@@ -39,7 +39,7 @@ const TimeTableItemHorizontalContainer = styled.div`
   padding: 1px 0;
 `;
 
-const TimeTableItemInner = styled.div<{ styles?: TimeTableStyles }>`
+const TimeTableItemInner = styled.div<{ $styles: TimeTableStyles }>`
   position: relative;
   height: 100%;
   padding: 1px;
@@ -48,15 +48,15 @@ const TimeTableItemInner = styled.div<{ styles?: TimeTableStyles }>`
     display: flex;
     position: relative;
     height: 100%;
-    color: ${(props) => props.styles?.itemTextColor || "inherit"};
+    color: ${(props) => props.$styles.itemTextColor || "inherit"};
     background-color: ${(props) =>
-      props.styles?.itemBackgroundColor || "#304151"};
+      props.$styles.itemBackgroundColor || "#304151"};
     cursor: pointer;
 
     &:hover {
       background-color: ${(props) =>
-        props.styles?.itemHoverBackgroundColor ||
-        props.styles?.itemBackgroundColor ||
+        props.$styles.itemHoverBackgroundColor ||
+        props.$styles.itemBackgroundColor ||
         "#374151"};
     }
 
@@ -114,7 +114,7 @@ const TimeTableItemVertical = React.memo(function ({
         maxWidth: `calc(100% / ${intersections + 1})`,
       }}
     >
-      <TimeTableItemInner styles={styles} onClick={() => onItemClick?.(item)}>
+      <TimeTableItemInner $styles={styles} onClick={() => onItemClick?.(item)}>
         {renderItem ? (
           renderItem(item)
         ) : (
@@ -153,7 +153,7 @@ const TimeTableItemHorizontal = React.memo(function ({
         maxHeight: `calc(100% / ${intersections + 1})`,
       }}
     >
-      <TimeTableItemInner styles={styles} onClick={() => onItemClick?.(item)}>
+      <TimeTableItemInner $styles={styles} onClick={() => onItemClick?.(item)}>
         {renderItem ? (
           renderItem(item)
         ) : (

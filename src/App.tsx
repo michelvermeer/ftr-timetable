@@ -18,12 +18,12 @@ const AppContainer = styled.div`
   height: 100%;
   align-items: stretch;
   flex-direction: column;
-  background-color: #f3f4f6;
+  background-color: #000;
 
   h1 {
     font-size: 1rem;
     padding: 0.75rem;
-    color: #666;
+    color: #999;
     text-align: center;
     margin: 0;
     z-index: 10;
@@ -104,13 +104,6 @@ function App() {
     console.log("Location clicked:", location);
   };
 
-  // const styles = {
-  //   item: {
-  //     backgroundColor: "#374151",
-  //     color: "#fff",
-  //   },
-  // }
-
   return (
     <AppContainer>
       <div>
@@ -120,16 +113,7 @@ function App() {
           locations={timetableMockLocations}
           onItemClick={onItemClicked}
           onLocationClick={onLocationClicked}
-          styles={{
-            backgroundColor: "transparent",
-            dateBackgroundColor: "ivory",
-            locationBackgroundColor: "beige",
-            textColor: "#000",
-            borderStyle: "solid 1px #ccc",
-            itemBackgroundColor: "burlywood",
-            itemHoverBackgroundColor: "darkkhaki",
-            itemTextColor: "#fff",
-          }}
+          startingHour={0}
         />
       </div>
       <div className="vertical-wrapper">
@@ -141,6 +125,7 @@ function App() {
             locations={timetableMockLocations}
             onItemClick={onItemClicked}
             onLocationClick={onLocationClicked}
+            startingHour={0}
             renderLocation={renderLocation}
             renderItem={renderItem}
             styles={{
