@@ -5,12 +5,13 @@ Ideal for showing the agenda for locations on a specific date.
 
 ![Example](https://github.com/michelvermeer/ftr-timetable/blob/main/src/assets/ftr-timetable-example.png?raw=true)
 
-### Changes in version 1.4.0
+### Changes in version 1.4
 
 - Fixed styled components warning messages for custom styles
 - Fixed offset of current time indicator
 - Current time indicator is now customisable
 - Items with invalid dates are filtered out from the timetable
+- Locations and items can be styled individually
 
 ## Installation
 
@@ -134,23 +135,25 @@ Options
 
 Options
 
-| Option | Type                | Required | Default | Description                  |
-| ------ | ------------------- | -------- | ------- | ---------------------------- |
-| id     | _string_ / _number_ | yes      |         | Location ID                  |
-| name   | _string_            | yes      |         | Location name                |
-| items  | `TimeTableItem[]`   | no       |         | Event items for the location |
+| Option | Type                              | Required | Default | Description                   |
+| ------ | --------------------------------- | -------- | ------- | ----------------------------- |
+| id     | _string_ / _number_               | yes      |         | Location ID                   |
+| name   | _string_                          | yes      |         | Location name                 |
+| items  | [TimeTableItem[]](#timetableitem) | no       |         | Event items for the location  |
+| style  | `React.CSSProperties`             | no       |         | Custom style for the location |
 
 ### TimeTableItem
 
 Options
 
-| Option    | Type                | Required | Default | Description                               |
-| --------- | ------------------- | -------- | ------- | ----------------------------------------- |
-| id        | _string_ / _number_ | yes      |         | Item ID                                   |
-| name      | _string_            | yes      |         | Item name                                 |
-| startDate | _Date_ / _string_   | yes      |         | Item start date                           |
-| endDate   | _Date_ / _string_   | yes      |         | Item end date                             |
-| data      | _{}_                | no       |         | Optional extra data. Useful for callbacks |
+| Option    | Type                  | Required | Default | Description                               |
+| --------- | --------------------- | -------- | ------- | ----------------------------------------- |
+| id        | _string_ / _number_   | yes      |         | Item ID                                   |
+| name      | _string_              | yes      |         | Item name                                 |
+| startDate | _Date_ / _string_     | yes      |         | Item start date                           |
+| endDate   | _Date_ / _string_     | yes      |         | Item end date                             |
+| data      | _{}_                  | no       |         | Optional extra data. Useful for callbacks |
+| style     | `React.CSSProperties` | no       |         | Custom style for the item                 |
 
 ### TimeTableStyles
 

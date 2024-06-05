@@ -17,6 +17,8 @@ export interface TimeTableItem {
   endDate: Date | string;
   locationId?: string | number;
   data?: Record<string, unknown>;
+  style?: React.CSSProperties;
+  className?: string;
 }
 
 export interface TimeTableRenderedItem<T> extends Omit<TimeTableItem, "data"> {
@@ -39,54 +41,54 @@ const TimeTableItemHorizontalContainer = styled.div`
   padding: 1px 0;
 `;
 
-const TimeTableItemInner = styled.div<{ $styles: TimeTableStyles }>`
+const TimeTableItemInner = styled.div`
   position: relative;
   height: 100%;
   padding: 1px;
+`;
 
-  .ftr-timetable-item {
-    display: flex;
-    position: relative;
-    height: 100%;
-    color: ${(props) => props.$styles.itemTextColor || "inherit"};
+const TimeTableItemContent = styled.div<{ $styles: TimeTableStyles }>`
+  display: flex;
+  position: relative;
+  height: 100%;
+  color: ${(props) => props.$styles.itemTextColor || "inherit"};
+  background-color: ${(props) =>
+    props.$styles.itemBackgroundColor || "#304151"};
+  cursor: pointer;
+
+  &:hover {
     background-color: ${(props) =>
-      props.$styles.itemBackgroundColor || "#304151"};
-    cursor: pointer;
+      props.$styles.itemHoverBackgroundColor ||
+      props.$styles.itemBackgroundColor ||
+      "#374151"};
+  }
 
-    &:hover {
-      background-color: ${(props) =>
-        props.$styles.itemHoverBackgroundColor ||
-        props.$styles.itemBackgroundColor ||
-        "#374151"};
+  &.ftr-timetable-item__vertical {
+    padding: 0.25rem;
+    flex-direction: column;
+
+    .ftr-timetable-item__inner {
+      top: 62px;
     }
+  }
 
-    &__vertical {
-      padding: 0.25rem;
-      flex-direction: column;
+  &.ftr-timetable-item__horizontal {
+    padding: 0.125rem 0.25rem;
+    flex-direction: row;
 
-      .ftr-timetable-item__inner {
-        top: 62px;
-      }
+    .ftr-timetable-item__inner {
+      left: 164px;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
     }
+  }
 
-    &__horizontal {
-      padding: 0.125rem 0.25rem;
-      flex-direction: row;
-
-      .ftr-timetable-item__inner {
-        left: 164px;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-      }
-    }
-
-    &__inner {
-      position: sticky;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-size: 12px;
-    }
+  .ftr-timetable-item__inner {
+    position: sticky;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
   }
 `;
 
@@ -114,15 +116,19 @@ const TimeTableItemVertical = React.memo(function ({
         maxWidth: `calc(100% / ${intersections + 1})`,
       }}
     >
-      <TimeTableItemInner $styles={styles} onClick={() => onItemClick?.(item)}>
+      <TimeTableItemInner onClick={() => onItemClick?.(item)}>
         {renderItem ? (
           renderItem(item)
         ) : (
-          <div className="ftr-timetable-item ftr-timetable-item__vertical">
+          <TimeTableItemContent
+            $styles={styles}
+            className="ftr-timetable-item ftr-timetable-item__vertical"
+            style={item.style}
+          >
             <div className="ftr-timetable-item__inner">
               <div>{item.name}</div>
             </div>
-          </div>
+          </TimeTableItemContent>
         )}
       </TimeTableItemInner>
     </TimeTableItemVerticalContainer>
@@ -153,13 +159,17 @@ const TimeTableItemHorizontal = React.memo(function ({
         maxHeight: `calc(100% / ${intersections + 1})`,
       }}
     >
-      <TimeTableItemInner $styles={styles} onClick={() => onItemClick?.(item)}>
+      <TimeTableItemInner onClick={() => onItemClick?.(item)}>
         {renderItem ? (
           renderItem(item)
         ) : (
-          <div className="ftr-timetable-item ftr-timetable-item__horizontal">
+          <TimeTableItemContent
+            $styles={styles}
+            className="ftr-timetable-item ftr-timetable-item__horizontal"
+            style={item.style}
+          >
             <div className="ftr-timetable-item__inner">{item.name}</div>
-          </div>
+          </TimeTableItemContent>
         )}
       </TimeTableItemInner>
     </TimeTableItemHorizontalContainer>

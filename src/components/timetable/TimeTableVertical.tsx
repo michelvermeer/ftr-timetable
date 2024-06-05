@@ -125,10 +125,10 @@ const TimeTableLocationContainer = styled.div<{ $styles: TimeTableStyles }>`
     color: ${(props) => props.$styles.locationTextColor || "inherit"};
     border-bottom: ${(props) =>
       props.$styles.borderStyle || "solid 2px #374151"};
+    background-color: ${(props) =>
+      props.$styles.locationBackgroundColor || "#000"};
 
     &__inner {
-      background-color: ${(props) =>
-        props.$styles.locationBackgroundColor || "#000"};
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -177,6 +177,7 @@ const TimeTableLocation = React.memo(function ({
         data-testid={`timetable-location-${location.id}`}
         title={location.name}
         onClick={() => onLocationClick?.(location)}
+        style={location.style}
       >
         {renderLocation ? (
           renderLocation(location)

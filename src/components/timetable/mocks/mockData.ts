@@ -9,6 +9,9 @@ export const timetableMockLocations: TimeTableLocation[] = [
   {
     id: 1,
     name: "Mainstage",
+    style: {
+      backgroundColor: "#444",
+    },
   },
   {
     id: 2,
@@ -35,6 +38,12 @@ export const timetableMockItems: TimeTableItem[] = [
     endDate: `${dateToday}T12:00:00`,
     name: "Main Event",
     locationId: 1,
+    style: {
+      backgroundColor: "#816c6c",
+      color: "#fff",
+      fontWeight: "bold",
+      boxShadow: "inset 0 5px 5px rgba(0, 0, 0, 0.4)",
+    },
     data: {
       type: "Music",
       category: "Music",
@@ -47,6 +56,7 @@ export const timetableMockItems: TimeTableItem[] = [
     endDate: `${dateToday}T16:30:00`,
     name: "Event 2",
     locationId: 1,
+    className: "special-event",
     data: {
       type: "Music",
       category: "Music",

@@ -174,6 +174,7 @@ const TimeTableLocation = React.memo(function ({
         data-testid={`timetable-location-${location.id}`}
         title={location.name}
         onClick={() => onLocationClick?.(location)}
+        style={location.style}
       >
         {renderLocation ? (
           renderLocation(location)

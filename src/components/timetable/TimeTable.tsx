@@ -41,6 +41,7 @@ export interface TimeTableLocation {
   id: string | number;
   name: string;
   items?: TimeTableItem[];
+  style?: React.CSSProperties;
 }
 
 export interface TimeTableView {
