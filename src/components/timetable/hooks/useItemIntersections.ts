@@ -18,8 +18,8 @@ export const useItemIntersections = (items: TimeTableItem[]) => {
       const end = new Date(item.endDate).getTime();
       const intersections = acc.filter(
         (existingItem) =>
-          (start >= existingItem.start && start <= existingItem.end) ||
-          (end >= existingItem.start && end <= existingItem.end)
+          (start >= existingItem.start && start < existingItem.end) ||
+          (end >= existingItem.start && end < existingItem.end)
       );
       for (const existingItem of intersections) {
         if (existingItem.intersections === 0) {
@@ -31,9 +31,9 @@ export const useItemIntersections = (items: TimeTableItem[]) => {
         )) {
           if (
             (start >= existingItemintersection.start &&
-              start <= existingItemintersection.end) ||
+              start < existingItemintersection.end) ||
             (end >= existingItemintersection.start &&
-              end <= existingItemintersection.end)
+              end < existingItemintersection.end)
           ) {
             existingItem.intersections += 1;
           }

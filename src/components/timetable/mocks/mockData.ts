@@ -52,7 +52,7 @@ export const timetableMockItems: TimeTableItem[] = [
   },
   {
     id: "e2",
-    startDate: `${dateToday}T13:00:00`,
+    startDate: `${dateToday}T12:00:00`,
     endDate: `${dateToday}T16:30:00`,
     name: "Event 2",
     locationId: 1,
@@ -103,6 +103,13 @@ export const timetableMockItems: TimeTableItem[] = [
     startDate: `${dateToday}T07:00:00`,
     endDate: `${dateToday}T10:30:00`,
     name: "Event 7",
+    locationId: 3,
+  },
+  {
+    id: "e7b",
+    startDate: `${dateToday}T07:00:00`,
+    endDate: `${dateToday}T10:30:00`,
+    name: "Event 7B",
     locationId: 3,
   },
 ];
