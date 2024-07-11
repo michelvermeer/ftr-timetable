@@ -24,7 +24,10 @@ export const useItemsInRange = (
       }
     }
 
-    return itemsInRange;
+    return itemsInRange.sort(
+      (a, b) =>
+        new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+    );
   }, [date, startingHour, numberOfHours, items]);
 
   return itemsInRange;

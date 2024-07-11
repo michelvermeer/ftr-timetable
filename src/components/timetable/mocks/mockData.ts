@@ -37,6 +37,7 @@ export const timetableMockItems: TimeTableItem[] = [
     startDate: `${dateToday}T08:00:00`,
     endDate: `${dateToday}T12:00:00`,
     name: "Main Event",
+    info: "Don't miss it!",
     locationId: 1,
     style: {
       backgroundColor: "#816c6c",

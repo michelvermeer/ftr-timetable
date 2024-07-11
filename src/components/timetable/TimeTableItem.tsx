@@ -13,6 +13,7 @@ import { TimeTableStyles } from "./TimeTable";
 export interface TimeTableItem {
   id: string | number;
   name: string;
+  info?: string;
   startDate: Date | string;
   endDate: Date | string;
   locationId?: string | number;
@@ -89,6 +90,12 @@ const TimeTableItemContent = styled.div<{ $styles: TimeTableStyles }>`
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 12px;
+
+    .ftr-timetable-item__info {
+      font-size: 10px;
+      font-weight: normal;
+      opacity: 0.9;
+    }
   }
 `;
 
@@ -127,6 +134,9 @@ const TimeTableItemVertical = React.memo(function ({
           >
             <div className="ftr-timetable-item__inner">
               <div>{item.name}</div>
+              {item.info && (
+                <div className="ftr-timetable-item__info">{item.info}</div>
+              )}
             </div>
           </TimeTableItemContent>
         )}
@@ -168,7 +178,12 @@ const TimeTableItemHorizontal = React.memo(function ({
             className="ftr-timetable-item ftr-timetable-item__horizontal"
             style={item.style}
           >
-            <div className="ftr-timetable-item__inner">{item.name}</div>
+            <div className="ftr-timetable-item__inner">
+              <div>{item.name}</div>
+              {item.info && (
+                <div className="ftr-timetable-item__info">{item.info}</div>
+              )}
+            </div>
           </TimeTableItemContent>
         )}
       </TimeTableItemInner>

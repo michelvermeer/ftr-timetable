@@ -57,8 +57,8 @@ const TimeTableInner = styled.div<{ $styles: TimeTableStyles }>`
     &__date {
       display: flex;
       flex-direction: row;
-      justify-content: flex-end;
-      align-items: center;
+      justify-content: stretch;
+      align-items: stretch;
       width: 100%;
       height: 60px;
       padding: 0 0.25rem;
@@ -71,6 +71,7 @@ const TimeTableInner = styled.div<{ $styles: TimeTableStyles }>`
       z-index: 2;
 
       select {
+        width: 100%;
         background-color: transparent;
         color: ${(props) => props.$styles.textColor || "#fff"};
         border: none;

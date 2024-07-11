@@ -5,7 +5,6 @@ import {
   timetableMockItems,
   timetableMockLocations,
 } from "./components/timetable/mocks/mockData";
-import React from "react";
 
 interface EventData {
   type: string;
@@ -40,60 +39,60 @@ const AppContainer = styled.div`
   }
 `;
 
-const CustomLocation = styled.div`
-  background-color: #550000;
-  height: 100%;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-  font-size: 1.25rem;
-  line-height: 1;
-  letter-spacing: 1px;
-  font-weight: 600;
-  font-family: Brush Script MT, serif;
-  gap: 10px;
+// const CustomLocation = styled.div`
+//   background-color: #550000;
+//   height: 100%;
+//   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+//   display: flex;
+//   align-items: center;
+//   padding: 0 10px;
+//   font-size: 1.25rem;
+//   line-height: 1;
+//   letter-spacing: 1px;
+//   font-weight: 600;
+//   font-family: Brush Script MT, serif;
+//   gap: 10px;
 
-  .custom-location-name {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-  }
-`;
+//   .custom-location-name {
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+//     display: -webkit-box;
+//     -webkit-box-orient: vertical;
+//     -webkit-line-clamp: 2;
+//   }
+// `;
 
-const CustomItem = styled.div`
-  background-color: #550000;
-  height: 100%;
-  color: #fff;
-  position: relative;
-  padding: 10px;
+// const CustomItem = styled.div`
+//   background-color: #550000;
+//   height: 100%;
+//   color: #fff;
+//   position: relative;
+//   padding: 10px;
 
-  h4 {
-    margin: 0;
-    font-family: Tahoma, sans-serif;
-    font-size: 14px;
-  }
-`;
+//   h4 {
+//     margin: 0;
+//     font-family: Tahoma, sans-serif;
+//     font-size: 14px;
+//   }
+// `;
 
-const renderLocation: React.FC<TimeTableLocation> = (location) => {
-  return (
-    <CustomLocation>
-      <div>♦</div>
-      <div className="custom-location-name">{location.name}</div>
-    </CustomLocation>
-  );
-};
+// const renderLocation: React.FC<TimeTableLocation> = (location) => {
+//   return (
+//     <CustomLocation>
+//       <div>♦</div>
+//       <div className="custom-location-name">{location.name}</div>
+//     </CustomLocation>
+//   );
+// };
 
-const renderItem: React.FC<TimeTableRenderedItem<EventData>> = (item) => {
-  return (
-    <CustomItem>
-      <h4>{item.name}</h4>
-      <div>{item.data?.type}</div>
-    </CustomItem>
-  );
-};
+// const renderItem: React.FC<TimeTableRenderedItem<EventData>> = (item) => {
+//   return (
+//     <CustomItem>
+//       <h4>{item.name}</h4>
+//       <div>{item.data?.type}</div>
+//     </CustomItem>
+//   );
+// };
 
 function App() {
   const onItemClicked = (item: TimeTableRenderedItem<EventData>) => {
@@ -118,7 +117,7 @@ function App() {
       </div>
       <div className="vertical-wrapper">
         <h1>Vertical</h1>
-        <div className="bg-red-400 flex-1 vertical-container">
+        <div className="vertical-container">
           <TimeTable
             variant="vertical"
             items={timetableMockItems}
@@ -126,8 +125,8 @@ function App() {
             onItemClick={onItemClicked}
             onLocationClick={onLocationClicked}
             startingHour={0}
-            renderLocation={renderLocation}
-            renderItem={renderItem}
+            // renderLocation={renderLocation}
+            // renderItem={renderItem}
             styles={{
               backgroundColor: "#220000",
               dateBackgroundColor: "#440000",

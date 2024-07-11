@@ -3,7 +3,15 @@
   "description": "A versatile timetable component for React",
   "private": false,
   "license": "MIT",
-  "version": "1.4.4",
+  "keywords": [
+    "React",
+    "Timetable",
+    "Schedule",
+    "Calendar",
+    "Events",
+    "Typescript"
+  ],
+  "version": "1.4.5",
   "type": "module",
   "types": "package/dist/index.d.ts",
   "main": "package/dist/index.umd.js",

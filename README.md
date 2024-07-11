@@ -12,6 +12,7 @@ Ideal for showing the agenda for locations on a specific date.
 - Current time indicator is now customisable
 - Items with invalid dates are filtered out from the timetable
 - Locations and items can be styled individually
+- Items can include extra info
 
 ## Installation
 
@@ -61,6 +62,7 @@ const items: TimeTableItem[] = [
   {
     id: "1",
     name: "Main event",
+    info: "Don't miss it!",
     locationId: "1",
     startDate: "2024-05-05T10:00:00+02:00",
     endDate: "2024-05-05T15:00:00+02:00",
@@ -150,6 +152,7 @@ Options
 | --------- | --------------------- | -------- | ------- | ----------------------------------------- |
 | id        | _string_ / _number_   | yes      |         | Item ID                                   |
 | name      | _string_              | yes      |         | Item name                                 |
+| info      | _string_              | no       |         | Item extra info                           |
 | startDate | _Date_ / _string_     | yes      |         | Item start date                           |
 | endDate   | _Date_ / _string_     | yes      |         | Item end date                             |
 | data      | _{}_                  | no       |         | Optional extra data. Useful for callbacks |
