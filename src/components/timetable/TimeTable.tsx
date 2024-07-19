@@ -11,6 +11,8 @@ export interface TimeTableStyles {
   backgroundColor?: string;
   borderStyle?: string;
   dateBackgroundColor?: string;
+  dateTextColor?: string;
+  datePickerBackgroundColor?: string;
   itemBackgroundColor?: string;
   itemHoverBackgroundColor?: string;
   itemTextColor?: string;
@@ -26,7 +28,9 @@ export interface TimeTable {
   variant?: "horizontal" | "vertical";
   startingHour?: number;
   dates?: string[];
+  dateFormat?: string;
   numberOfHours?: number;
+  showTimeMarker?: boolean;
   styles?: TimeTableStyles;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onItemClick?: (item: TimeTableRenderedItem<any>) => void;
@@ -61,6 +65,7 @@ export const TimeTable: React.FC<TimeTable> = ({
   locations,
   items: individualItems,
   dates,
+  dateFormat = "eee dd MMMM",
   onItemClick,
   onLocationClick,
   onDateChange,
@@ -69,6 +74,7 @@ export const TimeTable: React.FC<TimeTable> = ({
   renderLocation,
   startingHour = 6,
   numberOfHours = 24,
+  showTimeMarker = true,
   styles: customStyles,
 }) => {
   const styles = useMemo<TimeTableStyles>(() => {
@@ -138,7 +144,9 @@ export const TimeTable: React.FC<TimeTable> = ({
       displayStyle={displayStyle}
       renderItem={renderItem}
       renderLocation={renderLocation}
+      dateFormat={dateFormat}
       selectedDate={selectedDate}
+      showTimeMarker={showTimeMarker}
       items={itemsInRange}
       styles={styles}
     >

@@ -19,7 +19,8 @@ export const TimeTableMarker = React.memo(function ({
 }: {
   date: string;
 }) {
-  const { ref, displayStyle, startingHour, styles } = useTimeTableContext();
+  const { ref, displayStyle, showTimeMarker, startingHour, styles } =
+    useTimeTableContext();
   const position = useMemo<number>(() => {
     const dateString = format(new Date(date), "yyyy-MM-dd");
     const nowString = format(subHours(new Date(), startingHour), "yyyy-MM-dd");
@@ -47,7 +48,7 @@ export const TimeTableMarker = React.memo(function ({
     });
   }, [position, displayStyle, ref]);
 
-  if (position < 1) {
+  if (position < 1 || !showTimeMarker) {
     return null;
   }
 

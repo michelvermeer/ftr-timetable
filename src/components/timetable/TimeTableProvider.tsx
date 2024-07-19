@@ -12,6 +12,8 @@ export interface TimeTableContext
   numberOfHours: number;
   displayStyle: TimeTable["variant"];
   selectedDate: string;
+  dateFormat: string;
+  showTimeMarker: boolean;
   styles: TimeTableStyles;
   ref: React.RefObject<HTMLDivElement>;
 }

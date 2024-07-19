@@ -12,11 +12,22 @@ import { useTimeTableContext } from "./hooks/useTimeTable";
 import { useItemIntersections } from "./hooks/useItemIntersections";
 
 const TimeTableContainer = styled.div`
-  ::-webkit-scrollbar {
-    display: none;
+  &::-webkit-scrollbar {
+    width: 0px;
+    height: 8px;
+    background: #1f2937;
   }
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+
+  &::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 50%;
+    border: solid 2px #1f2937;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: hsl(from #888 h s calc(l - 5));
+  }
+
   height: 100%;
   max-width: 100vw;
   position: relative;
@@ -44,10 +55,8 @@ const TimeTableInner = styled.div<{ $styles: TimeTableStyles }>`
 
     &__container {
       width: 8rem;
-      border-right: ${(props) =>
-        props.$styles.borderStyle || "solid 2px #374151"};
-      background-color: ${(props) =>
-        props.$styles.dateBackgroundColor || "#1f2937"};
+      color: ${(props) => props.$styles.dateTextColor || "inherit"};
+      background: ${(props) => props.$styles.dateBackgroundColor || "#1f2937"};
       position: sticky;
       left: 0;
       top: 0;
@@ -55,35 +64,55 @@ const TimeTableInner = styled.div<{ $styles: TimeTableStyles }>`
     }
 
     &__date {
-      display: flex;
-      flex-direction: row;
-      justify-content: stretch;
-      align-items: stretch;
       width: 100%;
       height: 60px;
-      padding: 0 0.25rem;
-      background-color: ${(props) =>
-        props.$styles.dateBackgroundColor || "#1f2937"};
-      border-bottom: ${(props) =>
-        props.$styles.borderStyle || "solid 2px #374151"};
+      background: ${(props) =>
+        props.$styles.datePickerBackgroundColor ||
+        props.$styles.dateBackgroundColor ||
+        "#1f2937"};
       position: sticky;
       top: 0;
       z-index: 2;
+    }
+
+    &__select {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      padding-left: 0.5rem;
+      border-right: ${(props) =>
+        props.$styles.borderStyle || "solid 2px #374151"};
+      border-bottom: ${(props) =>
+        props.$styles.borderStyle || "solid 2px #374151"};
 
       select {
         width: 100%;
-        background-color: transparent;
-        color: ${(props) => props.$styles.textColor || "#fff"};
+        background: transparent
+          url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='${(
+            props
+          ) =>
+            props.$styles.dateTextColor?.replace("#", "%23") ||
+            "%23fff"}'><polygon points='0,0 100,0 50,50'/></svg>")
+          no-repeat calc(100% - 10px) calc(50% + 3px);
+        background-size: 10px;
+        color: inherit;
+        font-family: inherit;
         border: none;
         outline: none;
         font-size: 0.875rem;
         line-height: 1.25rem;
+        -webkit-appearance: none;
+        appearance: none;
       }
     }
 
     &__hours {
       position: relative;
       z-index: 1;
+      border-right: ${(props) =>
+        props.$styles.borderStyle || "solid 2px #374151"};
     }
 
     &__hour {
@@ -116,7 +145,6 @@ const TimeTableLocationContainer = styled.div<{ $styles: TimeTableStyles }>`
   display: flex;
   flex: 1;
   flex-direction: column;
-  border-right: ${(props) => props.$styles.borderStyle || "solid 2px #374151"};
 
   .ftr-timetable-location {
     height: 60px;
@@ -124,10 +152,7 @@ const TimeTableLocationContainer = styled.div<{ $styles: TimeTableStyles }>`
     top: 0;
     z-index: 2;
     color: ${(props) => props.$styles.locationTextColor || "inherit"};
-    border-bottom: ${(props) =>
-      props.$styles.borderStyle || "solid 2px #374151"};
-    background-color: ${(props) =>
-      props.$styles.locationBackgroundColor || "#000"};
+    background: ${(props) => props.$styles.locationBackgroundColor || "#000"};
 
     &__inner {
       display: flex;
@@ -137,6 +162,10 @@ const TimeTableLocationContainer = styled.div<{ $styles: TimeTableStyles }>`
       font-size: 0.875rem;
       line-height: 1.25rem;
       height: 100%;
+      border-right: ${(props) =>
+        props.$styles.borderStyle || "solid 2px #374151"};
+      border-bottom: ${(props) =>
+        props.$styles.borderStyle || "solid 2px #374151"};
     }
 
     &__name {
@@ -154,7 +183,9 @@ const TimeTableLocationContainer = styled.div<{ $styles: TimeTableStyles }>`
     flex: 1;
     flex-direction: column;
     position: relative;
-    background-color: ${(props) => props.$styles.backgroundColor || "#1f2937"};
+    background: ${(props) => props.$styles.backgroundColor || "#1f2937"};
+    border-right: ${(props) =>
+      props.$styles.borderStyle || "solid 2px #374151"};
   }
 `;
 
@@ -209,7 +240,7 @@ export const TimeTableVertical: React.FC<TimeTableView> = ({
   hours,
   selectedDate,
 }) => {
-  const { ref, styles } = useTimeTableContext();
+  const { ref, dateFormat, styles } = useTimeTableContext();
   return (
     <TimeTableContainer
       ref={ref}
@@ -223,18 +254,20 @@ export const TimeTableVertical: React.FC<TimeTableView> = ({
         >
           <div className="ftr-timetable-datetime__container">
             <div className="ftr-timetable-datetime__date">
-              <select
-                value={selectedDate}
-                onChange={(e) => dateChange(e.target.value)}
-              >
-                {dates.map((dt) => {
-                  return (
-                    <option key={dt} value={dt}>
-                      {format(new Date(dt), "eee dd MMMM")}
-                    </option>
-                  );
-                })}
-              </select>
+              <div className="ftr-timetable-datetime__select">
+                <select
+                  value={selectedDate}
+                  onChange={(e) => dateChange(e.target.value)}
+                >
+                  {dates.map((dt) => {
+                    return (
+                      <option key={dt} value={dt}>
+                        {format(new Date(dt), dateFormat)}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
             </div>
             <div className="ftr-timetable-datetime__hours">
               {hours.map((hour, i) => {

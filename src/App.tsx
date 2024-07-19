@@ -4,6 +4,7 @@ import { type TimeTableRenderedItem } from "./components/timetable/TimeTableItem
 import {
   timetableMockItems,
   timetableMockLocations,
+  timetableMockLocationsB,
 } from "./components/timetable/mocks/mockData";
 
 interface EventData {
@@ -18,6 +19,7 @@ const AppContainer = styled.div`
   align-items: stretch;
   flex-direction: column;
   background-color: #000;
+  font-family: Tahoma, sans-serif;
 
   h1 {
     font-size: 1rem;
@@ -39,61 +41,6 @@ const AppContainer = styled.div`
   }
 `;
 
-// const CustomLocation = styled.div`
-//   background-color: #550000;
-//   height: 100%;
-//   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-//   display: flex;
-//   align-items: center;
-//   padding: 0 10px;
-//   font-size: 1.25rem;
-//   line-height: 1;
-//   letter-spacing: 1px;
-//   font-weight: 600;
-//   font-family: Brush Script MT, serif;
-//   gap: 10px;
-
-//   .custom-location-name {
-//     overflow: hidden;
-//     text-overflow: ellipsis;
-//     display: -webkit-box;
-//     -webkit-box-orient: vertical;
-//     -webkit-line-clamp: 2;
-//   }
-// `;
-
-// const CustomItem = styled.div`
-//   background-color: #550000;
-//   height: 100%;
-//   color: #fff;
-//   position: relative;
-//   padding: 10px;
-
-//   h4 {
-//     margin: 0;
-//     font-family: Tahoma, sans-serif;
-//     font-size: 14px;
-//   }
-// `;
-
-// const renderLocation: React.FC<TimeTableLocation> = (location) => {
-//   return (
-//     <CustomLocation>
-//       <div>♦</div>
-//       <div className="custom-location-name">{location.name}</div>
-//     </CustomLocation>
-//   );
-// };
-
-// const renderItem: React.FC<TimeTableRenderedItem<EventData>> = (item) => {
-//   return (
-//     <CustomItem>
-//       <h4>{item.name}</h4>
-//       <div>{item.data?.type}</div>
-//     </CustomItem>
-//   );
-// };
-
 function App() {
   const onItemClicked = (item: TimeTableRenderedItem<EventData>) => {
     console.log("Item clicked:", item, `Free: ${item.data?.isFree || false}`);
@@ -108,11 +55,23 @@ function App() {
       <div>
         <h1>Horizontal</h1>
         <TimeTable
+          dateFormat="do MMMM ''yy"
           items={timetableMockItems}
           locations={timetableMockLocations}
           onItemClick={onItemClicked}
           onLocationClick={onLocationClicked}
-          startingHour={0}
+          showTimeMarker={false}
+          styles={{
+            backgroundColor: "linear-gradient(silver, #aaa)",
+            dateBackgroundColor: "#000",
+            datePickerBackgroundColor: "#000",
+            dateTextColor: "#999",
+            borderStyle: "solid 2px rgba(255, 255, 255, 0.2)",
+            itemBackgroundColor: "lightgray",
+            itemTextColor: "black",
+            locationBackgroundColor: "lightgray",
+            locationTextColor: "black",
+          }}
         />
       </div>
       <div className="vertical-wrapper">
@@ -120,21 +79,18 @@ function App() {
         <div className="vertical-container">
           <TimeTable
             variant="vertical"
-            items={timetableMockItems}
-            locations={timetableMockLocations}
+            items={[]}
+            locations={timetableMockLocationsB}
             onItemClick={onItemClicked}
             onLocationClick={onLocationClicked}
-            startingHour={0}
-            // renderLocation={renderLocation}
-            // renderItem={renderItem}
+            startingHour={8}
             styles={{
-              backgroundColor: "#220000",
-              dateBackgroundColor: "#440000",
-              textColor: "#fff",
-              borderStyle: "solid 4px #330000",
-              itemBackgroundColor: "#660000",
-              itemHoverBackgroundColor: "#880000",
-              itemTextColor: "#aaa",
+              dateBackgroundColor:
+                "linear-gradient(to right, #15192D, #292e44)",
+              backgroundColor: "#292e44",
+              datePickerBackgroundColor:
+                "linear-gradient(to right, #15192D, #292e44)",
+              borderStyle: "solid 2px rgba(255, 255, 255, 0.05)",
             }}
           />
         </div>

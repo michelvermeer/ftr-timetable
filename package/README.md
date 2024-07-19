@@ -5,14 +5,14 @@ Ideal for showing the agenda for locations on a specific date.
 
 ![Example](https://github.com/michelvermeer/ftr-timetable/blob/main/src/assets/ftr-timetable-example.png?raw=true)
 
-### Changes in version 1.4
+### Changes in version 1.5
 
-- Fixed styled components warning messages for custom styles
-- Fixed offset of current time indicator
-- Current time indicator is now customisable
-- Items with invalid dates are filtered out from the timetable
-- Locations and items can be styled individually
-- Items can include extra info
+- Items can contain a `cancelled` property
+- Items starting before or ending after the timetable scope are now included
+- Increased configurability of the timetable style and its locations and items
+- The current time indicator can be hidden by setting `showTimeMarker` to false
+- Fixed the horizontal scrollbar which was hidden, so mouse-only users couldn't scroll horizontally
+- The display format of the dates is now configurable through `dateFormat`
 
 ## Installation
 
@@ -73,6 +73,7 @@ const items: TimeTableItem[] = [
     locationId: "2",
     startDate: "2024-05-05T08:00:00+02:00",
     endDate: "2024-05-05T12:00:00+02:00",
+    cancelled: true,
     data: {
       type: "Music",
       category: "Classical",
@@ -118,20 +119,22 @@ return (
 
 Options
 
-| Option          | Type                                                            | Required | Default    | Description                                                                                                                               |
-| --------------- | --------------------------------------------------------------- | -------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| locations       | [TimeTableLocation[]](#timetablelocation)                       | yes      |            | The locations to show in the timetable                                                                                                    |
-| items           | [TimeTableItem[]](#timetableitem)                               | no       | []         | The events to show in the timetable                                                                                                       |
-| variant         | _string_                                                        | no       | horizontal | The display style of the timetable. Can be `horizontal` or `vertical`. Defaults to vertical when unspecified and there is only 1 location |
-| dates           | _string[]_                                                      | no       |            | Predefined dates to choose from. The first date will be selected by default. The format needs to be `yyyy-MM-dd`                          |
-| startingHour    | _number_                                                        | no       | 6          | Starting hour of a day                                                                                                                    |
-| numberOfHours   | _number_                                                        | no       | 24         | Number of hours to display for a single day                                                                                               |
-| styles          | [TimeTableStyles](#timetablestyles)                             | no       |            | Custom styling to apply to the timetable                                                                                                  |
-| onDateChange    | _function(date: string)_                                        | no       |            | Callback function when the date is changed. Returns the selected date as `yyyy-MM-dd`                                                     |
-| onItemClick     | _function(item: `TimeTableRenderedItem<T>`) => void_            | no       |            | Callback function when an item is clicked                                                                                                 |
-| onLocationClick | _function(item: `TimeTableLocation`) => void_                   | no       |            | Callback function when a location is clicked                                                                                              |
-| renderItem      | _function(item: `TimeTableRenderedItem<T>`) => React.ReactNode_ | no       |            | Custom rendering of items                                                                                                                 |
-| renderLocation  | _function(item: `TimeTableLocation`) => React.ReactNode_        | no       |            | Custom rendering of locations                                                                                                             |
+| Option          | Type                                                            | Required | Default     | Description                                                                                                                               |
+| --------------- | --------------------------------------------------------------- | -------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| locations       | [TimeTableLocation[]](#timetablelocation)                       | yes      |             | The locations to show in the timetable                                                                                                    |
+| items           | [TimeTableItem[]](#timetableitem)                               | no       | []          | The events to show in the timetable                                                                                                       |
+| variant         | _string_                                                        | no       | horizontal  | The display style of the timetable. Can be `horizontal` or `vertical`. Defaults to vertical when unspecified and there is only 1 location |
+| dates           | _string[]_                                                      | no       |             | Predefined dates to choose from. The first date will be selected by default. The format needs to be `yyyy-MM-dd`                          |
+| startingHour    | _number_                                                        | no       | 6           | Starting hour of a day                                                                                                                    |
+| numberOfHours   | _number_                                                        | no       | 24          | Number of hours to display for a single day                                                                                               |
+| styles          | [TimeTableStyles](#timetablestyles)                             | no       |             | Custom styling to apply to the timetable                                                                                                  |
+| onDateChange    | _function(date: string)_                                        | no       |             | Callback function when the date is changed. Returns the selected date as `yyyy-MM-dd`                                                     |
+| onItemClick     | _function(item: `TimeTableRenderedItem<T>`) => void_            | no       |             | Callback function when an item is clicked                                                                                                 |
+| onLocationClick | _function(item: `TimeTableLocation`) => void_                   | no       |             | Callback function when a location is clicked                                                                                              |
+| renderItem      | _function(item: `TimeTableRenderedItem<T>`) => React.ReactNode_ | no       |             | Custom rendering of items                                                                                                                 |
+| renderLocation  | _function(item: `TimeTableLocation`) => React.ReactNode_        | no       |             | Custom rendering of locations                                                                                                             |
+| dateFormat      | _string_                                                        | no       | eee dd MMMM | Date format of the date picker. [Guide](https://date-fns.org/v3.6.0/docs/format)                                                          |
+| showTimeMarker  | _boolean_                                                       | no       | true        | Show or hide the current time marker                                                                                                      |
 
 ### TimeTableLocation
 
@@ -157,20 +160,23 @@ Options
 | endDate   | _Date_ / _string_     | yes      |         | Item end date                             |
 | data      | _{}_                  | no       |         | Optional extra data. Useful for callbacks |
 | style     | `React.CSSProperties` | no       |         | Custom style for the item                 |
+| cancelled | _boolean_             | no       | false   | Shows the item as cancelled               |
 
 ### TimeTableStyles
 
 Options
 
-| Option                   | Type     | Default           | Description                                                       |
-| ------------------------ | -------- | ----------------- | ----------------------------------------------------------------- |
-| backgroundColor          | _string_ | #1f2937           | Background color                                                  |
-| borderStyle              | _string_ | solid 2px #374151 | CSS Border style, specify "none" to remove borderStyle            |
-| dateBackgroundColor      | _string_ | #1f2937           | Background color of the date and hours. Avoid using "transparent" |
-| itemBackgroundColor      | _string_ | #304151           | Background color of an item                                       |
-| itemHoverBackgroundColor | _string_ | #374151           | Background color of an item on hover                              |
-| itemTextColor            | _string_ | inherit           | Text color of an item                                             |
-| locationBackgroundColor  | _string_ | #000              | Background color of a location                                    |
-| locationTextColor        | _string_ | inherit           | Text color of a location                                          |
-| textColor                | _string_ | #fff              | General text color used in the timetable                          |
-| timeMarkerColor          | _string_ | #666              | Color of the current time indicator                               |
+| Option                    | Type     | Default           | Description                                                       |
+| ------------------------- | -------- | ----------------- | ----------------------------------------------------------------- |
+| backgroundColor           | _string_ | #1f2937           | Background color                                                  |
+| borderStyle               | _string_ | solid 2px #374151 | CSS Border style, specify "none" to remove borderStyle            |
+| dateBackgroundColor       | _string_ | #1f2937           | Background color of the date and hours. Avoid using "transparent" |
+| dateTextColor             | _string_ | inherit           | Text color of the date and hours                                  |
+| datePickerBackgroundColor | _string_ | #1f2937           | Background of the date picker                                     |
+| itemBackgroundColor       | _string_ | #304151           | Background color of an item                                       |
+| itemHoverBackgroundColor  | _string_ | #374151           | Background color of an item on hover                              |
+| itemTextColor             | _string_ | inherit           | Text color of an item                                             |
+| locationBackgroundColor   | _string_ | #000              | Background color of a location                                    |
+| locationTextColor         | _string_ | inherit           | Text color of a location                                          |
+| textColor                 | _string_ | #fff              | General text color used in the timetable                          |
+| timeMarkerColor           | _string_ | #666              | Color of the current time indicator                               |

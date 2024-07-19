@@ -20,6 +20,7 @@ export interface TimeTableItem {
   data?: Record<string, unknown>;
   style?: React.CSSProperties;
   className?: string;
+  cancelled?: boolean;
 }
 
 export interface TimeTableRenderedItem<T> extends Omit<TimeTableItem, "data"> {
@@ -53,12 +54,14 @@ const TimeTableItemContent = styled.div<{ $styles: TimeTableStyles }>`
   position: relative;
   height: 100%;
   color: ${(props) => props.$styles.itemTextColor || "inherit"};
-  background-color: ${(props) =>
-    props.$styles.itemBackgroundColor || "#304151"};
+  background: ${(props) => props.$styles.itemBackgroundColor || "#304151"};
   cursor: pointer;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.4);
 
   &:hover {
-    background-color: ${(props) =>
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.1);
+    background: ${(props) =>
       props.$styles.itemHoverBackgroundColor ||
       props.$styles.itemBackgroundColor ||
       "#374151"};
@@ -82,6 +85,14 @@ const TimeTableItemContent = styled.div<{ $styles: TimeTableStyles }>`
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
+    }
+  }
+
+  &.item-cancelled {
+    opacity: 0.5;
+
+    .ftr-timetable-item__inner {
+      text-decoration: line-through;
     }
   }
 
@@ -175,7 +186,9 @@ const TimeTableItemHorizontal = React.memo(function ({
         ) : (
           <TimeTableItemContent
             $styles={styles}
-            className="ftr-timetable-item ftr-timetable-item__horizontal"
+            className={`ftr-timetable-item ftr-timetable-item__horizontal${
+              item.cancelled ? " item-cancelled" : ""
+            }${item.className ? ` ${item.className}` : ""}`}
             style={item.style}
           >
             <div className="ftr-timetable-item__inner">
@@ -207,18 +220,23 @@ export const TimeTableItem = React.memo(function ({
     new Date(item.startDate),
     new Date(selectedDate)
   );
+
   const dayStart = subDays(
     addHours(startOfDay(new Date(item.startDate)), startingHour),
     diffDays
   );
-  const eventStartOffset = differenceInMinutes(
-    new Date(item.startDate),
-    dayStart
+
+  const itemStart = new Date(
+    Math.max(new Date(item.startDate).getTime(), new Date(dayStart).getTime())
   );
+
+  const eventStartOffset = differenceInMinutes(itemStart, dayStart);
+
   const durationMinutes = differenceInMinutes(
     new Date(item.endDate),
-    new Date(item.startDate)
+    itemStart
   );
+
   const eventSize = Math.min(
     durationMinutes,
     numberOfHours * 60 - eventStartOffset
